@@ -1,47 +1,51 @@
-<template>
-  <div>
-    <h1>fasdfd</h1>
-    <el-card>
-      <div class="tableContainer">
-        <el-table v-bind="dataOption.tableAttributes">
-          <el-table-column
-            v-for="(column, index) in dataOption.tableColumnAttributes"
-            v-bind="column"
-            v-bind:key="index"
-          >
-            <template slot-scope="scope">
-              <component
-                v-if="column.solt !== undefined"
-                :is="column.solt"
-                :scope="scope"
-              ></component>
-            </template>
-          </el-table-column>
-        </el-table>
-      </div>
-    </el-card>
-  </div>
-</template>
-
 <script>
 export default {
   name: "CustomerTable",
   props: {
-    filter: {
-      type: Object,
-      default: function() {
-        return {};
-      }
-    },
-    dataOption: {
+    table: {
       type: Object,
       required: true
-    } // {tableAttributes: {}, tableColumnAttributes: {}}
+    }
   },
-  created() {
-    console.log(this.dataOption);
+  data() {
+    return {
+      list: [
+        { id: 1, name: "小王" },
+        { id: 2, name: "小刘" }
+      ]
+    };
+  },
+  render(h) {
+    const {
+      table: { tableProps, columnsProps },
+      list
+    } = this;
+
+    console.log("tableProps", tableProps);
+
+    const elTableProps = {
+      props: { ...tableProps, data: list }
+    };
+
+    return (
+      <el-table {...elTableProps}>
+        {columnsProps.map(column => {
+          const props = { ...column };
+          const scopedSlots = {};
+          if (typeof column.render === "function") {
+            scopedSlots.default = scope => column.render(h, scope);
+          }
+          if (typeof column.renderHeader === "function") {
+            scopedSlots.header = scope => column.renderHeader(h, scope);
+          }
+          const columnProps = {
+            props,
+            scopedSlots
+          };
+          return <el-table-column {...columnProps} />;
+        })}
+      </el-table>
+    );
   }
 };
 </script>
-
-<style scoped></style>

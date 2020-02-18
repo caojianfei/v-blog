@@ -1,14 +1,7 @@
 <template>
-  <h1>tag List</h1>
+  <h2>fsadf</h2>
 </template>
 
 <script>
-export default {
-  name: "Index",
-  mounted() {
-    console.log(this.$route.matched);
-  }
-};
+export default {};
 </script>
-
-<style scoped></style>
