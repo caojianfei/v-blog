@@ -9,6 +9,11 @@ import Articles from "../views/admin/articles/Index";
 
 const routes = [
   {
+    path: "/login",
+    name: "login",
+    component: () => import("../views/Login")
+  },
+  {
     path: "/admin",
     component: Layout,
     meta: { name: "Dashboard" },
