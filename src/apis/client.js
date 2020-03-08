@@ -1,8 +1,15 @@
 import axios from "axios";
 
+const token = localStorage.getItem("token");
+//store.state.auth.token;
+
 const httpClient = axios.create({
   baseURL: "http://localhost:8888"
 });
+
+if (token !== "" && token !== null && token !== undefined) {
+  httpClient.defaults.headers["Authorization"] = "Bearer " + token;
+}
 
 httpClient.interceptors.response.use(
   function(response) {

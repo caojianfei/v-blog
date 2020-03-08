@@ -1,5 +1,7 @@
 <template>
   <div>
+    <h1>{{ token }}</h1>
+    <h1>{{ isLogin ? "登录" : "未登录" }}</h1>
     <el-row class="form-container">
       <el-col :span="8" :offset="8">
         <el-form
@@ -36,7 +38,7 @@
 </template>
 
 <script>
-import { login } from "../apis";
+import { mapActions, mapState, mapGetters } from "vuex";
 export default {
   name: "Login",
   data() {
@@ -55,7 +57,20 @@ export default {
       loading: false
     };
   },
+  mounted() {
+    console.log(this.isLogin);
+    if (this.isLogin === true) {
+      this.$router.replace("/admin");
+    }
+  },
+  computed: {
+    ...mapState("auth", {
+      token: state => state.token
+    }),
+    ...mapGetters("auth", ["isLogin"])
+  },
   methods: {
+    ...mapActions("auth", ["login"]),
     submitForm(formName) {
       this.$refs[formName].validate(valid => {
         if (!valid) {
@@ -65,24 +80,19 @@ export default {
         const {
           form: { email, password }
         } = this;
-        login({ email, password })
+        this.login({ email, password })
           .then(res => {
-            console.log("res", res);
-            const { code, message, data } = res;
-            if (code !== 0) {
-              this.$message.error(`登录失败：${message}`);
-              this.loading = false;
-              return;
+            if (res.code === 0) {
+              this.$router.replace("/admin");
+              this.$message.success(res.message);
+            } else {
+              this.$message.error(res.message || "登录失败");
             }
-            console.log(data);
-            this.$message.success("登录成功");
-            this.loading = false;
           })
-          .catch(err => {
+          .catch(() => {
             this.$message.error("登录失败");
-            this.loading = false;
-            console.log("err", err);
-          });
+          })
+          .finally(() => (this.loading = false));
       });
     },
     resetForm(formName) {

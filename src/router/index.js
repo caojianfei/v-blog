@@ -1,12 +1,13 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
+import store from "../store";
 
 Vue.use(VueRouter);
 import Layout from "../views/admin/Layout";
 import Dashboard from "../views/admin/dashboard/Dashboard";
 import Tags from "../views/admin/tags/Index";
 import Articles from "../views/admin/articles/Index";
-
+import Categories from "../views/admin/categories/Index";
 const routes = [
   {
     path: "/login",
@@ -16,6 +17,13 @@ const routes = [
   {
     path: "/admin",
     component: Layout,
+    beforeEnter: (to, from, next) => {
+      const isLogin = store.getters["auth/isLogin"];
+      if (isLogin === false) {
+        next("/login");
+      }
+      next();
+    },
     meta: { name: "Dashboard" },
     children: [
       {
@@ -50,53 +58,13 @@ const routes = [
       },
       {
         path: "categories",
-        component: Articles,
-        meta: { name: "分类管理" },
-        children: [
-          {
-            path: "",
-            name: "categories.list",
-            component: () => import("../views/admin/categories/list/Index.vue"),
-            meta: { name: "分类列表" }
-          },
-          {
-            path: "create",
-            name: "articcategoriesles.create",
-            component: () => import("../views/admin/categories/edit/Index.vue"),
-            meta: { name: "创建分类" }
-          },
-          {
-            path: "update",
-            name: "arcategoriesticles.update",
-            component: () => import("../views/admin/categories/edit/Index.vue"),
-            meta: { name: "编辑分类" }
-          }
-        ]
+        component: Categories,
+        meta: { name: "分类管理" }
       },
       {
         path: "tags",
         component: Tags,
-        meta: { name: "标签管理" },
-        children: [
-          {
-            path: "",
-            name: "tags.list",
-            component: () => import("../views/admin/tags/list/Index.vue"),
-            meta: { name: "标签列表" }
-          },
-          {
-            path: "create",
-            name: "tags.create",
-            component: () => import("../views/admin/tags/edit/Index.vue"),
-            meta: { name: "创建标签" }
-          },
-          {
-            path: "update",
-            name: "tags.update",
-            component: () => import("../views/admin/tags/edit/Index.vue"),
-            meta: { name: "编辑标签" }
-          }
-        ]
+        meta: { name: "标签管理" }
       }
     ]
   }

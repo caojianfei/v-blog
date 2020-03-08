@@ -11,19 +11,19 @@
     :default-active="this.$route.path"
   >
     <el-menu-item index="/admin">
-      <i class="el-icon-s-platform"></i>
+      <i class="el-icon-s-platform"> </i>
       <span slot="title">Dashboard </span>
     </el-menu-item>
     <el-menu-item index="/admin/articles">
-      <i class="el-icon-s-platform"></i>
+      <i class="el-icon-notebook-1"> </i>
       <span slot="title">文章管理</span>
     </el-menu-item>
     <el-menu-item index="/admin/categories">
-      <i class="el-icon-s-platform"></i>
+      <i class="el-icon-folder-opened"> </i>
       <span slot="title">分类管理</span>
     </el-menu-item>
     <el-menu-item index="/admin/tags">
-      <i class="el-icon-s-platform"></i>
+      <i class="el-icon-collection-tag"> </i>
       <span slot="title">标签管理</span>
     </el-menu-item>
   </el-menu>
