@@ -25,9 +25,9 @@
 </template>
 
 <script>
-import Menu from "../../components/Menu";
-import Breadcrumb from "../../components/Breadcrumb";
-import Header from "../../components/Header";
+import Menu from "@/components/Menu";
+import Breadcrumb from "@/components/Breadcrumb";
+import Header from "@/components/Header";
 
 export default {
   name: "Layout",
