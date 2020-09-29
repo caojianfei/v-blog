@@ -11,8 +11,6 @@ Vue.use(ElementUI);
 Vue.use(mavonEditor);
 Vue.config.productionTip = false;
 
-console.log(store.state.auth.token);
-
 new Vue({
   router,
   store,

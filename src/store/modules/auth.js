@@ -1,4 +1,4 @@
-import { login } from "../../apis";
+import { login } from "@/apis";
 
 export default {
   namespaced: true,
@@ -17,7 +17,9 @@ export default {
       state.token = token;
     },
     clearToken(state) {
+      console.info("auth state mutations clearToken", state);
       state.token = "";
+      localStorage.removeItem("token");
     }
   },
   actions: {

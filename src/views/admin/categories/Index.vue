@@ -209,7 +209,7 @@ export default {
       query.pageSize = pageSize;
       getCategories(query)
         .then(res => {
-          // console.log(res);
+          console.log("getCategories", res);
           const { code, message, data } = res;
           if (code !== 0) {
             this.$message.error(message || "分类列表获取失败");
@@ -221,13 +221,7 @@ export default {
           this.pageSize = pageSize;
           this.total = total;
         })
-        .catch(err => {
-          console.log(err);
-          this.$message.error("请求出错啦");
-        })
-        .finally(() => {
-          this.loading = false;
-        });
+        .finally(() => (this.loading = false));
     }
   }
 };

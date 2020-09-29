@@ -1,15 +1,24 @@
 import axios from "axios";
-
-const token = localStorage.getItem("token");
-//store.state.auth.token;
+import { default as store } from "../store";
+import { Message } from "element-ui";
+import { default as router } from "../router";
 
 const httpClient = axios.create({
-  baseURL: "http://localhost:8888"
+  baseURL: process.env.VUE_APP_API_HOST
 });
 
-if (token !== "" && token !== null && token !== undefined) {
-  httpClient.defaults.headers["Authorization"] = "Bearer " + token;
-}
+httpClient.interceptors.request.use(
+  function(config) {
+    const token = store.state.auth.token;
+    if (token !== "" && token !== null && token !== undefined) {
+      config.headers.Authorization = "Bearer " + token;
+    }
+    return config;
+  },
+  function(error) {
+    return Promise.reject(error);
+  }
+);
 
 httpClient.interceptors.response.use(
   function(response) {
@@ -20,7 +29,16 @@ httpClient.interceptors.response.use(
     return response;
   },
   function(error) {
-    // 对响应错误做点什么
+    let errMsg = "网络请求失败";
+    // 未登录处理
+    if (error.response.status === 401) {
+      // 清空 token
+      store.commit("auth/clearToken");
+      // 导航到登录页面
+      router.push("/login").then();
+      errMsg = "未登录或登录失效，请重新登录";
+    }
+    Message.error(errMsg);
     return Promise.reject(error);
   }
 );
