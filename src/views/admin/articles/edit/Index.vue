@@ -6,10 +6,14 @@
           style="min-width: 100%"
           v-model="form.categoryId"
           filterable
-          placeholder="分类"
+          remote
+          reserve-keyword
+          placeholder="请输入关键词"
+          :remote-method="searchCategory"
+          :loading="categoryQueryLoading"
         >
           <el-option
-            v-for="item in options"
+            v-for="item in categories"
             :key="item.value"
             :label="item.label"
             :value="item.value"
@@ -27,18 +31,23 @@
         <mavon-editor style="min-height: 500px;" @change="onMavonEditChange" />
       </el-col>
     </el-row>
+
     <el-collapse>
-      <el-collapse-item title="高级设置">
-        <div>
+      <el-collapse-item class="high-level-setting" title="高级设置">
+        <div class="setting-item">
           <label>选择文章标签</label>
           <el-select
             style="width: 100%"
             v-model="form.tags"
             multiple
-            placeholder="标签"
+            filterable
+            remote
+            placeholder="请输入关键词"
+            :remote-method="searchTag"
+            :loading="tagQueryLoading"
           >
             <el-option
-              v-for="item in options"
+              v-for="item in tags"
               :key="item.value"
               :label="item.label"
               :value="item.value"
@@ -46,25 +55,23 @@
             </el-option>
           </el-select>
         </div>
-        <div>
+
+        <div class="setting-item">
           <label>文章简介</label>
-          <el-input type="textarea" :rows="2"></el-input>
+          <el-input v-model="form.intro" type="textarea" :rows="2"></el-input>
         </div>
-        <div>
-          <label>发布时间</label>
-          <el-date-picker
-            v-model="value1"
-            type="datetime"
-            placeholder="选择日期时间"
-          >
-          </el-date-picker>
-        </div>
-        <div>
+
+        <div class="setting-item">
+          <label>封面图</label>
           <el-upload
             class="upload-demo"
+            name="images"
             drag
-            action="https://jsonplaceholder.typicode.com/posts/"
-            multiple
+            :action="imageUploadAction"
+            :on-success="onImageUploaded"
+            :on-remove="onImageRemove"
+            :file-list="uploadImages"
+            list-type="picture"
           >
             <i class="el-icon-upload"></i>
             <div class="el-upload__text">
@@ -75,14 +82,25 @@
             </div>
           </el-upload>
         </div>
-        <div>
+
+        <div class="setting-item">
           <label>是否草稿</label>
           <el-switch
-            v-model="value"
+            v-model="form.isDraft"
             active-color="#13ce66"
             inactive-color="#ff4949"
           >
           </el-switch>
+        </div>
+
+        <div v-if="form.isDraft" class="setting-item">
+          <label>发布时间</label>
+          <el-date-picker
+            v-model="form.publishedAt"
+            type="datetime"
+            placeholder="选择日期时间"
+          >
+          </el-date-picker>
         </div>
       </el-collapse-item>
     </el-collapse>
@@ -93,34 +111,19 @@
 </template>
 
 <script>
+import { searchCategories, searchTags } from "../../../../apis";
 export default {
   name: "Index",
   data() {
     return {
+      categoryQueryLoading: false,
+      tagQueryLoading: false,
+      imageUploadAction: process.env.VUE_APP_API_HOST + "/files/image",
+      uploadImages: [],
       value: "",
       value1: "",
-      options: [
-        {
-          value: "选项1",
-          label: "黄金糕"
-        },
-        {
-          value: "选项2",
-          label: "双皮奶"
-        },
-        {
-          value: "选项3",
-          label: "蚵仔煎"
-        },
-        {
-          value: "选项4",
-          label: "龙须面"
-        },
-        {
-          value: "选项5",
-          label: "北京烤鸭"
-        }
-      ],
+      categories: [],
+      tags: [],
       form: {
         title: "",
         headImage: "",
@@ -141,9 +144,56 @@ export default {
     },
     submit() {
       console.log(this.form);
+    },
+    searchCategory(query) {
+      this.categoryQueryLoading = true;
+      if (query === "" || name === undefined || name === null) {
+        console.log("query", query);
+        this.categoryQueryLoading = false;
+        return;
+      }
+
+      searchCategories(query)
+        .then(res => (this.categories = res.data.list))
+        .catch(() => this.$message.error("分类查询失败"))
+        .finally(() => (this.categoryQueryLoading = false));
+    },
+    searchTag(query) {
+      this.tagQueryLoading = true;
+      if (query === "" || name === undefined || name === null) {
+        console.log("query", query);
+        this.tagQueryLoading = false;
+        return;
+      }
+
+      searchTags(query)
+        .then(res => (this.tags = res.data.list))
+        .catch(() => this.$message.error("分类查询失败"))
+        .finally(() => (this.tagQueryLoading = false));
+    },
+    onImageUploaded(res, file, fileList) {
+      console.log("res", res);
+      console.log("file", file);
+      console.log("fileList", fileList);
+      this.uploadImages = res.data.list;
+      console.log(this.uploadImages);
+      this.form.headImage = res.data.list[0].url;
+    },
+    onImageRemove(file, fileList) {
+      console.log("file", file);
+      console.log("fileList", fileList);
+      this.form.headImage = "";
     }
   }
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.high-level-setting .setting-item {
+  margin-top: 20px;
+}
+.high-level-setting .setting-item label {
+  margin-bottom: 5px;
+  margin-right: 5px;
+}
+</style>

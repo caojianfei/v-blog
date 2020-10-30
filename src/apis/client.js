@@ -3,6 +3,8 @@ import { default as store } from "../store";
 import { Message } from "element-ui";
 import { default as router } from "../router";
 
+// console.log("process.env.VUE_APP_API_HOST", process.env.VUE_APP_API_HOST);
+
 const httpClient = axios.create({
   baseURL: process.env.VUE_APP_API_HOST
 });

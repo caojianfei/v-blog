@@ -8,6 +8,7 @@ import Dashboard from "../views/admin/dashboard/Dashboard";
 import Tags from "../views/admin/tags/Index";
 import Articles from "../views/admin/articles/Index";
 import Categories from "../views/admin/categories/Index";
+import Home from "../views/Home";
 const routes = [
   {
     path: "/login",
@@ -67,6 +68,10 @@ const routes = [
         meta: { name: "标签管理" }
       }
     ]
+  },
+  {
+    path: "/",
+    component: Home
   }
   // {
   //   path: "/about",

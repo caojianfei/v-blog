@@ -24,3 +24,12 @@ export function showTag(id) {
   const url = `/admin/tag/${id}`;
   return http.get(url);
 }
+
+export function searchTags(name) {
+  if (name === "" || name === undefined || name === null) {
+    throw new Error("名称不能为空");
+  }
+
+  const url = `/admin/tags/${name}`;
+  return http.get(url);
+}
