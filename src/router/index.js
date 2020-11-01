@@ -50,7 +50,7 @@ const routes = [
             meta: { name: "创建文章" }
           },
           {
-            path: "update",
+            path: "update/:id",
             name: "articles.update",
             component: () => import("../views/admin/articles/edit/Index.vue"),
             meta: { name: "编辑列表" }

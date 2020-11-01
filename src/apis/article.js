@@ -5,22 +5,22 @@ export function getArticles(query = {}) {
   return http.get(url, { params: query });
 }
 
-export function createTag(data) {
+export function createArticle(data) {
   const url = "/admin/article";
   return http.post(url, data);
 }
 
-export function editTag(id, data) {
+export function editArticle(id, data) {
   const url = `/admin/article/${id}`;
   return http.post(url, data);
 }
 
-export function deleteTag(id) {
+export function deleteArticle(id) {
   const url = `/admin/article/${id}`;
   return http.delete(url);
 }
 
-export function showTag(id) {
+export function showArticle(id) {
   const url = `/admin/article/${id}`;
   return http.get(url);
 }
