@@ -31,7 +31,8 @@
         <mavon-editor
           v-model="form.content"
           style="min-height: 500px;"
-          @change="onMavonEditChange"
+          ref="md"
+          @imgAdd="onEditImageAdd"
         />
       </el-col>
     </el-row>
@@ -120,7 +121,8 @@ import {
   searchTags,
   createArticle,
   showArticle,
-  editArticle
+  editArticle,
+  uploadImages as uploadFile
 } from "../../../../apis";
 export default {
   name: "Index",
@@ -153,14 +155,14 @@ export default {
       this.id = id;
       this.searchArticle(id);
     }
-    console.log(params);
+    // console.log(params);
   },
   methods: {
-    onMavonEditChange(value, render) {
-      console.log("value: ", value);
-      console.log("render", render);
-      //this.form.content = value;
-    },
+    // onMavonEditChange(value, render) {
+    //   console.log("value: ", value);
+    //   console.log("render", render);
+    //   //this.form.content = value;
+    // },
     submit() {
       // console.log(this.form);
       // return;
@@ -312,6 +314,19 @@ export default {
           }
           this.tags = tags;
           this.form.tags = tagValues;
+        }
+      });
+    },
+    onEditImageAdd(pos, file) {
+      let formdata = new FormData();
+      formdata.append("images", file);
+      uploadFile(formdata).then(res => {
+        const { code, message, data } = res;
+        if (code === 0) {
+          const { list } = data;
+          this.$refs.md.$img2Url(pos, list[0].url);
+        } else {
+          this.$message.error(message);
         }
       });
     }
