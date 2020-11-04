@@ -9,6 +9,7 @@ import Tags from "../views/admin/tags/Index";
 import Articles from "../views/admin/articles/Index";
 import Categories from "../views/admin/categories/Index";
 import Home from "../views/Home";
+import Index from "../views/Index";
 const routes = [
   {
     path: "/login",
@@ -71,7 +72,13 @@ const routes = [
   },
   {
     path: "/",
-    component: Home
+    component: Index,
+    children: [
+      {
+        path: "",
+        component: Home
+      }
+    ]
   }
   // {
   //   path: "/about",
