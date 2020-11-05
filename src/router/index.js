@@ -10,6 +10,8 @@ import Articles from "../views/admin/articles/Index";
 import Categories from "../views/admin/categories/Index";
 import Home from "../views/Home";
 import Index from "../views/Index";
+import Post from "../views/Post";
+import About from "../views/About";
 const routes = [
   {
     path: "/login",
@@ -77,6 +79,14 @@ const routes = [
       {
         path: "",
         component: Home
+      },
+      {
+        path: "post/:id",
+        component: Post
+      },
+      {
+        path: "about",
+        component: About
       }
     ]
   }

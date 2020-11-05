@@ -11,6 +11,7 @@ import "element-ui/lib/theme-chalk/display.css";
 Vue.use(ElementUI);
 Vue.use(mavonEditor);
 Vue.config.productionTip = false;
+Vue.prototype.$markDown = mavonEditor.markdownIt;
 
 Date.prototype.Format = function(fmt) {
   var o = {
