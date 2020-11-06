@@ -30,10 +30,12 @@
             </el-menu>
           </div></el-col
         >
-        <el-col :sm="6" class="hidden-xs-only nav-item"
+        <el-col :sm="10" class="hidden-xs-only nav-item"
           ><div class="nav-search">
-            <el-input class="search-input" />
-            <el-button type="primary" plain>搜索</el-button>
+            <label>
+              <input placeholder="输入关键词搜索" class="search-input" />
+            </label>
+            <el-button type="primary">搜索</el-button>
           </div></el-col
         >
       </el-row>
@@ -120,7 +122,12 @@ export default {
   align-items: center;
 }
 
-.nav-search .search-input {
+.search-input {
   margin-right: 20px;
+  height: 30px;
+  border: none;
+  border-bottom: 1px solid #f0f0f0;
+  outline-style: none;
+  width: 220px;
 }
 </style>

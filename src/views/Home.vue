@@ -1,16 +1,28 @@
 <template>
   <div class="a-container">
     <div class="main-content">
-      <div class="">
-        <el-carousel indicator-position="outside">
-          <el-carousel-item>
-            <img src="../assets/logo.png" alt="" />
+      <div class="carousel-container" ref="carousel">
+        <el-carousel indicator-position="none" :height="carouselH + 'px'">
+          <el-carousel-item class="carousel-item">
+            <el-image
+              class="carousel-image"
+              :src="require('../assets/a.jpg')"
+              alt=""
+            />
           </el-carousel-item>
-          <el-carousel-item>
-            <img src="../assets/logo.png" alt="" />
+          <el-carousel-item class="carousel-item">
+            <el-image
+              class="carousel-image"
+              :src="require('../assets/b.jpg')"
+              alt=""
+            />
           </el-carousel-item>
-          <el-carousel-item>
-            <img src="../assets/logo.png" alt="" />
+          <el-carousel-item class="carousel-item">
+            <el-image
+              class="carousel-image"
+              :src="require('../assets/c.jpg')"
+              alt=""
+            />
           </el-carousel-item>
         </el-carousel>
       </div>
@@ -56,8 +68,25 @@ export default {
   components: {
     Article
   },
+  mounted() {
+    let windowW = document.body.offsetWidth;
+    let coefficient = 3;
+    if (windowW < 768) {
+      coefficient = 2;
+    }
+
+    this.carouselH = this.$refs.carousel.offsetWidth / coefficient;
+    window.onresize = () => {
+      windowW = document.body.offsetWidth;
+      if (windowW < 768) {
+        coefficient = 2;
+      }
+      this.carouselH = this.$refs.carousel.offsetWidth / coefficient;
+    };
+  },
   data() {
     return {
+      carouselH: 0,
       banners: [],
       article: {
         headImageUrl:
@@ -79,23 +108,17 @@ export default {
   width: 100%;
   display: flex;
   justify-content: center;
-  margin-top: 40px;
+  margin-top: 20px;
 }
 
 .main-content {
-  max-width: 1140px;
+  max-width: 1000px;
   width: 100%;
-  /*background: aqua;*/
   height: auto;
 }
 
-.bg-purple {
-  background: purple;
-}
 .article-tag {
   margin: 5px;
 }
-.articl-tag-container {
-  margin-bottom: 20px;
-}
+
 </style>
