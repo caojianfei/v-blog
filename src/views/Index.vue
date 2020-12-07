@@ -3,7 +3,7 @@
     <el-header class="header">
       <el-row :gutter="5" class="nav">
         <el-col :xs="4" class="hidden-sm-and-up nav-item"
-          ><div class="bg-purple nav-icon">
+          ><div class="bg-purple nav-icon" @click="drawer = true">
             <img src="../assets/nav.png" alt="" /></div
         ></el-col>
         <el-col :xs="16" :sm="6" class="nav-item"
@@ -39,6 +39,42 @@
           </div></el-col
         >
       </el-row>
+      <el-drawer
+        title="我是标题"
+        :visible.sync="drawer"
+        :with-header="false"
+        direction="ltr"
+        size="60%"
+      >
+        <div class="drawer-nav">
+          <div class="drawer-nav-logo" style="text-align: center">
+            <el-avatar
+              shape="circle"
+              :size="100"
+              fit="fill"
+              src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1607364116291&di=224d186e25090f6c1e50c67d317061e9&imgtype=0&src=http%3A%2F%2Fa0.att.hudong.com%2F30%2F29%2F01300000201438121627296084016.jpg"
+              @error="handleAvatarError"
+            ></el-avatar>
+            <span class="drawer-nav-title">vBlog</span>
+          </div>
+          <div class="drawer-nav-menu" style="text-align: center">
+            <el-menu>
+              <el-menu-item>
+                <i class="el-icon-s-home"></i>
+                <span slot="title">首页</span>
+              </el-menu-item>
+              <el-menu-item>
+                <i class="el-icon-user-solid"></i>
+                <span slot="title">关于</span>
+              </el-menu-item>
+              <el-menu-item>
+                <i class="el-icon-phone"></i>
+                <span slot="title">联系我</span>
+              </el-menu-item>
+            </el-menu>
+          </div>
+        </div>
+      </el-drawer>
     </el-header>
     <el-main class="main">
       <router-view></router-view>
@@ -53,12 +89,16 @@ export default {
   components: {},
   data() {
     return {
-      activeIndex: "1"
+      activeIndex: "1",
+      drawer: false
     };
   },
   methods: {
     handleSelect(key, keyPath) {
       console.log(key, keyPath);
+    },
+    handleAvatarError(e) {
+      console.log("error: ", e);
     }
   }
 };
@@ -129,5 +169,15 @@ export default {
   border-bottom: 1px solid #f0f0f0;
   outline-style: none;
   width: 220px;
+}
+
+.drawer-nav-logo {
+  text-align: center;
+  padding: 50px;
+}
+
+.drawer-nav-title {
+  display: block;
+  margin-top: 5px;
 }
 </style>

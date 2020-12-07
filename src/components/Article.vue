@@ -9,7 +9,7 @@
         <el-image
           style="width: 100%; height: 100%"
           :src="article.headImageUrl"
-          :fit="fit"
+          fit="fill"
         ></el-image>
       </div>
       <div class="article-content">
