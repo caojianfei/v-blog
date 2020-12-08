@@ -1,6 +1,6 @@
 <template>
   <div class="article-item">
-    <el-card class="article" :body-style="{ padding: '0px' }">
+    <el-card class="article no-border-radius" :body-style="{ padding: '0px' }">
       <div
         v-if="article.headImageUrl"
         class="article-image"
@@ -21,7 +21,11 @@
           {{ article.intro }}
         </div>
         <div class="article-bottom">
-          <el-button style="border: none;" type="danger" plain
+          <el-button
+            @click="readArticle(article.id)"
+            style="border: none;"
+            type="danger"
+            plain
             >阅读全文</el-button
           >
           <div>
@@ -48,11 +52,16 @@ export default {
       type: Object,
       required: true
     }
+  },
+  methods: {
+    readArticle(articleId) {
+      this.$router.push(`/post/${articleId}`);
+    }
   }
 };
 </script>
 
-<style>
+<style scoped>
 .article-item {
   margin-bottom: 20px;
 }

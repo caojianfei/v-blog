@@ -22,15 +22,14 @@
               :default-active="activeIndex"
               class="el-menu"
               mode="horizontal"
+              @select="handleSelect"
             >
               <el-menu-item
                 v-bind:key="menu.link"
                 v-for="menu in menus"
                 :index="menu.link"
               >
-                <router-link style="text-decoration:none" :to="menu.link">{{
-                  menu.title
-                }}</router-link>
+                {{ menu.title }}
               </el-menu-item>
             </el-menu>
           </div></el-col
@@ -80,7 +79,12 @@
     <el-main class="main">
       <router-view></router-view>
     </el-main>
-    <el-footer class="footer">Footer</el-footer>
+    <el-footer class="footer">
+      <div class="foot-info">
+        <div>© 2020 caojf.com All Rights Reserved.</div>
+        <div>wait complete ...</div>
+      </div>
+    </el-footer>
   </el-container>
 </template>
 
@@ -141,7 +145,14 @@ export default {
   flex: 1;
   padding: 0;
   margin: 0;
-  background: aliceblue;
+  background: #f7f7f7;
+}
+.footer {
+  background: #f7f7f7;
+}
+
+.foot-info {
+  text-align: center;
 }
 
 .nav .nav-item {

@@ -2,22 +2,28 @@
   <div class="main-content">
     <div class="article">
       <el-image
+        v-if="article.headImageUrl"
         class="article-image"
         fit="cover"
-        :src="require('../assets/a.jpg')"
+        :src="article.headImageUrl"
       ></el-image>
 
       <div class="article-content">
-        <div class="article-title">文章标题啊发发是</div>
+        <div class="article-title">{{ article.title }}</div>
         <div class="article-published-time">
-          四月 16，2020
+          {{ article.publishedAt }}
         </div>
         <p class="markdown-body" v-html="articleHtml"></p>
       </div>
+
       <div class="comment">
         <h1>评论</h1>
         <div class="comment-edit">
-          <mavon-editor class="mavon-edit" v-bind="commentEdit" />
+          <mavon-editor
+            v-model="comment.content"
+            class="mavon-edit"
+            v-bind="commentEdit"
+          />
           <div
             class="userinfo"
             style="width: 100%; text-align: center; margin-top: 20px"
@@ -26,20 +32,24 @@
               <el-col :xs="24" :sm="9">
                 <div class="input-item">
                   <label class="input-label">
-                    <input placeholder="邮箱" />
+                    <input v-model="comment.nickname" placeholder="昵称" />
                   </label>
                 </div>
               </el-col>
               <el-col :xs="24" :sm="9">
                 <div class="input-item">
                   <label class="input-label">
-                    <input placeholder="邮箱" />
+                    <input v-model="comment.email" placeholder="邮箱" />
                   </label>
                 </div>
               </el-col>
               <el-col :xs="24" :sm="6">
                 <div class="input-item">
-                  <el-button class="submit-commit-button" size="small" plain
+                  <el-button
+                    @click="addCommit"
+                    class="submit-commit-button"
+                    size="small"
+                    plain
                     >提交评论</el-button
                   >
                 </div>
@@ -47,20 +57,18 @@
             </el-row>
           </div>
         </div>
-        <!--        <el-divider></el-divider>-->
+
         <div class="comment-list">
-          <div class="comment-item">
+          <div class="comment-item" v-for="cmt in comments" v-bind:key="cmt.id">
             <div class="comment-title">
-              <span class="comment-nickname">一个路过的人</span> 在 <span class="comment-published-time">2020年四月</span> 说：
+              <span class="comment-nickname">{{ cmt.nickname }}</span> 在
+              <span class="comment-published-time">{{ cmt.createdAt }}</span>
+              说：
             </div>
-            <p class="markdown-body comment-content" v-html="commentHtml"></p>
-          </div>
-          <el-divider></el-divider>
-          <div class="comment-item">
-            <div class="comment-title">
-              <span class="comment-nickname">一个路过的人</span> 在 <span class="comment-published-time">2020年四月</span> 说：
-            </div>
-            <p class="markdown-body comment-content" v-html="commentHtml"></p>
+            <p
+              class="markdown-body comment-content"
+              v-html="renderComment(cmt.content)"
+            ></p>
           </div>
         </div>
       </div>
@@ -69,78 +77,24 @@
 </template>
 
 <script>
+import {
+  getArticleInfo,
+  addArticleComment,
+  getArticleCommentList
+} from "../apis/front/front";
+import moment from "moment";
 export default {
   name: "Post",
   data() {
     return {
-      content:
-        "[github地址](https://github.com/caojianfei/laravel-qcloud-cos) 随手star :kissing_heart:\n" +
-        "# 扩展说明\n" +
-        "\n" +
-        "该扩展是对`laravel`框架中的文件存储自定义驱动的扩展，实现`腾讯云cos 对象存储`驱动。目前是在laravel 5.6 版本测试与开发的，其他版本暂时没有亲测。\n" +
-        "\n" +
-        "\n" +
-        "# 使用\n" +
-        "\n" +
-        "安装扩展包\n" +
-        "\n" +
-        "```\n" +
-        "composer install caojianfei/laravel-qcloud-cos\n" +
-        "```\n" +
-        "\n" +
-        "配置 filesystems.php\n" +
-        "\n" +
-        "```\n" +
-        "'disks' => [\n" +
-        "       .\n" +
-        "       .\n" +
-        "       .\n" +
-        "       \n" +
-        "    'qcloud-cos' => [\n" +
-        "        /* 驱动名称 */\n" +
-        "        'driver' => 'qcloud-cos',\n" +
-        "        /* 地域 */\n" +
-        "        'region' =>  env('QCLOUD_COS_REGION', 'ap-shanghai'),\n" +
-        "        /* 认证信息 */\n" +
-        "        'credentials' => [\n" +
-        "            'app_id' =>  env('QCLOUD_COS_APP_ID'),\n" +
-        "            'secret_id' =>  env('QCLOUD_COS_SECRET_ID'),\n" +
-        "            'secret_key' => env('QCLOUD_COS_SECRET_KEY'),\n" +
-        "            'token' => env('QCLOUD_COS_TOKEN', null)\n" +
-        "        ],\n" +
-        "        /* 默认存储桶 */\n" +
-        "        'default_bucket' =>  env('QCLOUD_COS_DEFAULT_BUCKET'),\n" +
-        "        'timeout' => env('QCLOUD_COS_TIMEOUT', 3600),\n" +
-        "        'connect_timeout' =>  env('QCLOUD_COS_CONNECT_TIMEOUT', 3600)\n" +
-        "    ],\n" +
-        "\n" +
-        "],\n" +
-        "```\n" +
-        "\n" +
-        "配置好自己的配置之后就可以开始使用了，具体使用方法可以参考[laravel官方文档](https://learnku.com/docs/laravel/5.6/filesystem/1390)\n" +
-        "\n" +
-        "# 官方文档\n" +
-        "\n" +
-        "[laravel 文件存储](https://learnku.com/docs/laravel/5.6/filesystem/1390)\n" +
-        "\n" +
-        "[腾讯云对象存储](https://cloud.tencent.com/document/product/436)\n" +
-        "\n" +
-        "# 结尾\n" +
-        "\n" +
-        "如果喜欢，欢迎 star，如果发现了任何问题或有更好的意见和建议，欢迎联系或者`pull request`\n" +
-        "\n" +
-        "# License\n" +
-        "\n" +
-        "MIT\n" +
-        "\n",
+      article: {},
       articleHtml: "",
-      comment:
-        "# 我发的考虑时间\n" +
-        "flksjdkflja 付款啦九点零分静安寺\n" +
-        "\n" +
-        "```php\n" +
-        'echo "hello world"\n' +
-        "```",
+      comment: {
+        nickname: "",
+        email: "",
+        content: ""
+      },
+      comments: [],
       commentHtml: "",
       commentEdit: {
         boxShadow: false,
@@ -184,13 +138,82 @@ export default {
       }
     };
   },
-  mounted() {
-    this.renderMd();
+  async mounted() {
+    const { id } = this.$route.params;
+    if (id > 0) {
+      await this.getArticle(id);
+      await this.getComments();
+    }
   },
   methods: {
-    renderMd() {
-      this.articleHtml = this.$markDown.render(this.content);
-      this.commentHtml = this.$markDown.render(this.comment);
+    renderComment(content) {
+      return this.$markDown.render(content);
+    },
+    async getArticle(id) {
+      const result = await getArticleInfo(id);
+      const { code, data } = result;
+      if (code === 0) {
+        this.article = data;
+        this.articleHtml = this.$markDown.render(this.article.content);
+      }
+    },
+    async addCommit() {
+      const { nickname, email, content } = this.comment;
+      console.log(nickname, email, content);
+      if (content === "") {
+        this.$message.warning("评论内容不能为空");
+        return;
+      }
+      if (nickname === "") {
+        this.$message.warning("昵称不能为空");
+        return;
+      }
+      if (email === "") {
+        this.$message.warning("email 不能为空");
+        return;
+      }
+
+      const articleId = this.article.id;
+      if (
+        articleId === undefined ||
+        articleId === "" ||
+        articleId === null ||
+        articleId === 0
+      ) {
+        this.$message.warning("文章id异常");
+        return;
+      }
+
+      const result = await addArticleComment({
+        nickname,
+        email,
+        content,
+        articleId
+      });
+      const { code } = result;
+      if (code === 0) {
+        this.$message.success("评论成功，等待管理员审核！");
+        this.resetCommentData();
+      }
+    },
+
+    resetCommentData() {
+      const { nickname, email, content } = "";
+      this.comment = Object.assign({}, { nickname, email, content });
+    },
+
+    async getComments() {
+      const result = await getArticleCommentList(this.article.id);
+      let {
+        code,
+        data: { list }
+      } = result;
+      if (code === 0) {
+        list.forEach(comment => {
+          comment.createdAt = moment(comment.createdAt).fromNow();
+        });
+        this.comments = list;
+      }
     }
   }
 };
@@ -202,6 +225,12 @@ export default {
 .article-title {
   font-weight: bold;
   font-size: x-large;
+  margin-bottom: 10px;
+}
+.article-content {
+  padding-top: 20px;
+  margin-left: 20px;
+  margin-right: 20px;
   margin-bottom: 10px;
 }
 .article-published-time {
@@ -251,7 +280,13 @@ export default {
 }
 
 .comment-content {
-  margin-left: 10px;
+  /* margin-left: 10px; */
+  background: #f8f8f8;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-top: 15px;
+  padding-bottom: 15px;
+  border-radius: 5px;
 }
 
 .comment-nickname {

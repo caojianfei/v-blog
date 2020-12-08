@@ -7,6 +7,10 @@ import mavonEditor from "mavon-editor";
 import "element-ui/lib/theme-chalk/index.css";
 import "mavon-editor/dist/css/index.css";
 import "element-ui/lib/theme-chalk/display.css";
+import "./assets/common/common.css";
+import moment from "moment";
+
+moment.locale("zh-cn");
 
 Vue.use(ElementUI);
 Vue.use(mavonEditor);
