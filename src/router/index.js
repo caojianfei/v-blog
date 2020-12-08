@@ -12,6 +12,7 @@ import Home from "../views/Home";
 import Index from "../views/Index";
 import Post from "../views/Post";
 import About from "../views/About";
+import Contact from "../views/Contact";
 const routes = [
   {
     path: "/login",
@@ -81,12 +82,16 @@ const routes = [
         component: Home
       },
       {
-        path: "post/:id",
-        component: Post
+        path: "contact",
+        component: Contact
       },
       {
         path: "about",
         component: About
+      },
+      {
+        path: "post/:id",
+        component: Post
       }
     ]
   }

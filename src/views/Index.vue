@@ -22,11 +22,16 @@
               :default-active="activeIndex"
               class="el-menu"
               mode="horizontal"
-              @select="handleSelect"
             >
-              <el-menu-item index="1">首页</el-menu-item>
-              <el-menu-item index="2">关于</el-menu-item>
-              <el-menu-item index="3">联系我</el-menu-item>
+              <el-menu-item
+                v-bind:key="menu.link"
+                v-for="menu in menus"
+                :index="menu.link"
+              >
+                <router-link style="text-decoration:none" :to="menu.link">{{
+                  menu.title
+                }}</router-link>
+              </el-menu-item>
             </el-menu>
           </div></el-col
         >
@@ -58,18 +63,14 @@
             <span class="drawer-nav-title">vBlog</span>
           </div>
           <div class="drawer-nav-menu" style="text-align: center">
-            <el-menu>
-              <el-menu-item>
-                <i class="el-icon-s-home"></i>
-                <span slot="title">首页</span>
-              </el-menu-item>
-              <el-menu-item>
-                <i class="el-icon-user-solid"></i>
-                <span slot="title">关于</span>
-              </el-menu-item>
-              <el-menu-item>
-                <i class="el-icon-phone"></i>
-                <span slot="title">联系我</span>
+            <el-menu :default-active="activeIndex" @select="handleSelect">
+              <el-menu-item
+                v-for="menu in menus"
+                v-bind:key="menu.link"
+                :index="menu.link"
+              >
+                <i :class="menu.icon"></i>
+                <span slot="title">{{ menu.title }}</span>
               </el-menu-item>
             </el-menu>
           </div>
@@ -87,15 +88,42 @@
 export default {
   name: "index",
   components: {},
+  mounted() {
+    // 默认菜单选中
+    this.menus.forEach(menu => {
+      if (this.$route.fullPath === menu.link) {
+        this.activeIndex = menu.link;
+      }
+    });
+  },
   data() {
     return {
-      activeIndex: "1",
-      drawer: false
+      activeIndex: "/",
+      drawer: false,
+      menus: [
+        {
+          link: "/",
+          title: "首页",
+          icon: "el-icon-s-home"
+        },
+        {
+          link: "/about",
+          title: "关于",
+          icon: "el-icon-user-solid"
+        },
+        {
+          link: "/contact",
+          title: "联系我",
+          icon: "el-icon-phone"
+        }
+      ]
     };
   },
   methods: {
-    handleSelect(key, keyPath) {
-      console.log(key, keyPath);
+    handleSelect(key) {
+      this.$router.push(key, () => {
+        this.drawer = false;
+      });
     },
     handleAvatarError(e) {
       console.log("error: ", e);
