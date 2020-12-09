@@ -1,21 +1,27 @@
 <template>
   <div class="article-item">
     <el-card class="article no-border-radius" :body-style="{ padding: '0px' }">
+      <!-- 文章头图 -->
       <div
         v-if="article.headImageUrl"
+        ref="articleImage"
         class="article-image"
-        style="width: 100%; height: 200px"
+        :style="{ width: '100%', height: articleImageHeigth + 'px' }"
       >
         <el-image
-          style="width: 100%; height: 100%"
           :src="article.headImageUrl"
-          fit="fill"
+          fit="cover"
+          style="width: 100%; height: 100%;"
         ></el-image>
       </div>
+
+      <!-- 文章内容 -->
       <div class="article-content">
         <div class="article-title">
           <div class="article-title-context">{{ article.title }}</div>
-          <div class="articl-publised-time">{{ article.publishedAt }}</div>
+          <div class="articl-publised-time">
+            {{ changeTime(article.publishedAt) }}
+          </div>
         </div>
         <div class="article-intro">
           {{ article.intro }}
@@ -45,6 +51,7 @@
 </template>
 
 <script>
+import moment from "moment";
 export default {
   name: "Article",
   props: {
@@ -53,9 +60,25 @@ export default {
       required: true
     }
   },
+  data() {
+    return {
+      articleImageHeigth: 0
+    };
+  },
+  mounted() {
+    if (this.$refs.articleImage) {
+      this.articleImageHeigth = this.$refs.articleImage.offsetWidth * 0.5;
+      window.addEventListener("resize", () => {
+        this.articleImageHeigth = this.$refs.articleImage.offsetWidth * 0.5;
+      });
+    }
+  },
   methods: {
     readArticle(articleId) {
       this.$router.push(`/post/${articleId}`);
+    },
+    changeTime(time) {
+      return moment(time).format("YYYY/MM/DD");
     }
   }
 };
@@ -65,6 +88,10 @@ export default {
 .article-item {
   margin-bottom: 20px;
 }
+/* .article-image {
+  width: 100%;
+  height: 100px;
+} */
 .article-content {
   margin: 20px;
 }
@@ -91,13 +118,19 @@ export default {
 
 .articl-number {
   padding: 5px;
+  font-size: small;
+  color: #909399;
 }
 .el-icon-view,
 .el-icon-chat-square {
-  font-size: 24px;
+  font-size: 20px;
+  font-weight: 1000;
 }
 .icon-container {
   display: inline-flex;
   align-items: center;
+}
+.icon-container:first-child {
+  padding-right: 5px;
 }
 </style>

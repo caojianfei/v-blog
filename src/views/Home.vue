@@ -8,6 +8,8 @@
               class="carousel-image"
               :src="require('../assets/a.jpg')"
               alt=""
+              :fit="fit"
+              style="height: 100%;"
             />
           </el-carousel-item>
           <el-carousel-item class="carousel-item">
@@ -15,6 +17,8 @@
               class="carousel-image"
               :src="require('../assets/b.jpg')"
               alt=""
+              :fit="fit"
+              style="height: 100%;"
             />
           </el-carousel-item>
           <el-carousel-item class="carousel-item">
@@ -22,6 +26,8 @@
               class="carousel-image"
               :src="require('../assets/c.jpg')"
               alt=""
+              :fit="fit"
+              style="height: 100%;"
             />
           </el-carousel-item>
         </el-carousel>
@@ -63,31 +69,25 @@
 <script>
 import Article from "@/components/Article";
 import { getArticleList } from "../apis/front/front";
+import moment from "moment";
 export default {
   name: "home",
   components: {
     Article
   },
   mounted() {
+    let coefficient = 0.618;
+    this.carouselH = this.$refs.carousel.offsetWidth * coefficient;
+    window.addEventListener("resize", () => {
+      this.carouselH = this.$refs.carousel.offsetWidth * coefficient;
+    });
+
     const { currentPage, pageSize } = this;
     this.getArticles(currentPage, pageSize);
-    let windowW = document.body.offsetWidth;
-    let coefficient = 3;
-    if (windowW < 768) {
-      coefficient = 2;
-    }
-
-    this.carouselH = this.$refs.carousel.offsetWidth / coefficient;
-    window.onresize = () => {
-      windowW = document.body.offsetWidth;
-      if (windowW < 768) {
-        coefficient = 2;
-      }
-      this.carouselH = this.$refs.carousel.offsetWidth / coefficient;
-    };
   },
   data() {
     return {
+      fit: "cover",
       carouselH: 0,
       banners: [],
       articles: [],
@@ -111,6 +111,9 @@ export default {
         this.currentPage = currentPage;
         this.total = total;
       }
+    },
+    changeTime(time) {
+      return moment(time).fromNow();
     }
   }
 };
@@ -121,8 +124,12 @@ export default {
   width: 100%;
   display: flex;
   justify-content: center;
-  margin-top: 20px;
+  /* margin-top: 20px; */
   margin-bottom: 20px;
+}
+
+.carousel-container {
+  margin-top: 20px;
 }
 
 .main-content {
