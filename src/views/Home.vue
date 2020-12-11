@@ -1,6 +1,7 @@
 <template>
   <div class="a-container">
     <div class="main-content">
+      <!-- 顶部轮播图 -->
       <div class="carousel-container" ref="carousel">
         <el-carousel indicator-position="none" :height="carouselH + 'px'">
           <el-carousel-item class="carousel-item">
@@ -35,7 +36,7 @@
 
       <el-row style="margin-top: 20px;">
         <!--left-->
-        <el-col :xs="24" :sm="14" style="padding: 0">
+        <el-col :xs="24" :sm="14" style="padding: 0;">
           <div class="article-list">
             <Article
               v-for="article in articles"
@@ -44,20 +45,19 @@
             ></Article>
           </div>
         </el-col>
+        <div class="article-loading" v-if="loading">正在努力加载...</div>
         <!--right-->
         <el-col :xs="24" :sm="{ span: 9, push: 1 }"
           ><div class="grid-content">
             <el-card class="articl-tag-container no-border-radius">
-              <el-tag class="article-tag">标签一</el-tag>
-              <el-tag class="article-tag" type="success">标签二</el-tag>
-              <el-tag class="article-tag" type="info">标签三</el-tag>
-              <el-tag class="article-tag" type="warning">标签四</el-tag>
-              <el-tag class="article-tag" type="danger">标签五</el-tag>
-              <el-tag class="article-tag">标签一</el-tag>
-              <el-tag class="article-tag" type="success">标签二</el-tag>
-              <el-tag class="article-tag" type="info">标签三</el-tag>
-              <el-tag class="article-tag" type="warning">标签四</el-tag>
-              <el-tag class="article-tag" type="danger">标签五</el-tag>
+              <el-button
+                v-for="tag in tags"
+                v-bind:key="tag.id"
+                :type="tag.type"
+                size="mini"
+                @click="searchTag(tag)"
+                >{{ tag.name }} [{{ tag.articleCount }}]</el-button
+              >
             </el-card>
           </div></el-col
         >
@@ -68,22 +68,22 @@
 
 <script>
 import Article from "@/components/Article";
-import { getArticleList } from "../apis/front/front";
-import moment from "moment";
+import { getTagList, getArticleList } from "../apis/front/front";
 export default {
   name: "home",
   components: {
     Article
   },
   mounted() {
+    window.addEventListener("scroll", this.onScroll, true);
     let coefficient = 0.618;
     this.carouselH = this.$refs.carousel.offsetWidth * coefficient;
     window.addEventListener("resize", () => {
       this.carouselH = this.$refs.carousel.offsetWidth * coefficient;
     });
 
-    const { currentPage, pageSize } = this;
-    this.getArticles(currentPage, pageSize);
+    this.getArticles();
+    this.getTags();
   },
   data() {
     return {
@@ -91,29 +91,70 @@ export default {
       carouselH: 0,
       banners: [],
       articles: [],
-      currentPage: 1,
+      currentPage: 0,
       pageSize: 10,
-      total: 0
+      total: 0,
+      loading: false,
+      tags: []
     };
   },
   methods: {
-    async getArticles(page, pageSize) {
+    async getArticles() {
+      this.loading = true;
+      const { currentPage, pageSize } = this;
       const result = await getArticleList({
-        page,
+        page: currentPage + 1,
         pageSize
       });
       const {
         code,
-        data: { currentPage, list, total }
+        data: { list, total }
       } = result;
       if (code === 0) {
-        this.articles = list;
-        this.currentPage = currentPage;
+        this.articles.push(...list);
+        this.currentPage = currentPage + 1;
         this.total = total;
       }
+      this.loading = false;
     },
-    changeTime(time) {
-      return moment(time).fromNow();
+    async getTags() {
+      const result = await getTagList();
+      const {
+        code,
+        data: { list }
+      } = result;
+      if (code === 0) {
+        list.forEach(tag => {
+          if (tag.articleCount >= 20) {
+            tag.type = "danger";
+          } else if (tag.articleCount >= 10 && tag.articleCount < 20) {
+            tag.type = "warning";
+          } else {
+            tag.type = "info";
+          }
+        });
+        this.tags = list;
+      }
+    },
+    searchTag(tag) {
+      this.$router.push({
+        path: "search",
+        query: { type: "tag", value: tag.id }
+      });
+    },
+    onScroll() {
+      const el = document.documentElement;
+      const contentHeight = el.scrollHeight;
+      const clientHeight = el.clientHeight;
+      const scrollTop = el.scrollTop;
+
+      // 屏幕滚动到底部
+      if (contentHeight - clientHeight - scrollTop == 0) {
+        const isEnd = this.articles.length >= this.total;
+        if (this.loading === false && isEnd === false) {
+          this.getArticles();
+        }
+      }
     }
   }
 };
@@ -139,5 +180,11 @@ export default {
 }
 .article-tag {
   margin: 5px;
+}
+.article-loading {
+  text-align: center;
+  padding: 20px;
+  color: #606266;
+  font-size: smaller;
 }
 </style>

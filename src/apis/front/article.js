@@ -33,3 +33,7 @@ export function getArticleCommentList(articleId) {
 export function addArticleComment(body) {
   return http.post("/comment", body);
 }
+
+export function getTagList() {
+  return http.get("/tags");
+}

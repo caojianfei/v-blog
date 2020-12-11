@@ -13,6 +13,7 @@ import Index from "../views/Index";
 import Post from "../views/Post";
 import About from "../views/About";
 import Contact from "../views/Contact";
+import Search from "../views/Search";
 const routes = [
   {
     path: "/login",
@@ -92,6 +93,10 @@ const routes = [
       {
         path: "post/:id",
         component: Post
+      },
+      {
+        path: "search",
+        component: Search
       }
     ]
   }

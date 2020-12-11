@@ -37,14 +37,18 @@
         <el-col :sm="10" class="hidden-xs-only nav-item"
           ><div class="nav-search">
             <label>
-              <input placeholder="输入关键词搜索" class="search-input" />
+              <input
+                v-model="keyword"
+                placeholder="输入关键词搜索"
+                class="search-input"
+              />
             </label>
-            <el-button type="primary">搜索</el-button>
+            <el-button @click="searchKeyword" type="primary">搜索</el-button>
           </div></el-col
         >
       </el-row>
       <el-drawer
-        title="我是标题"
+        title="menu"
         :visible.sync="drawer"
         :with-header="false"
         direction="ltr"
@@ -55,9 +59,8 @@
             <el-avatar
               shape="circle"
               :size="100"
-              fit="fill"
-              src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1607364116291&di=224d186e25090f6c1e50c67d317061e9&imgtype=0&src=http%3A%2F%2Fa0.att.hudong.com%2F30%2F29%2F01300000201438121627296084016.jpg"
-              @error="handleAvatarError"
+              fit="cover"
+              :src="require('../assets/logo.png')"
             ></el-avatar>
             <span class="drawer-nav-title">vBlog</span>
           </div>
@@ -81,8 +84,8 @@
     </el-main>
     <el-footer class="footer">
       <div class="foot-info">
-        <div>© 2020 caojf.com All Rights Reserved.</div>
-        <div>wait complete ...</div>
+        <div>©2020 - 2022 caojf.com All Rights Reserved.</div>
+        <div style="margin-top: 5px;">无尽的折腾，才是人生的主旋律</div>
       </div>
     </el-footer>
   </el-container>
@@ -104,6 +107,7 @@ export default {
     return {
       activeIndex: "/",
       drawer: false,
+      keyword: "",
       menus: [
         {
           link: "/",
@@ -129,8 +133,11 @@ export default {
         this.drawer = false;
       });
     },
-    handleAvatarError(e) {
-      console.log("error: ", e);
+    searchKeyword() {
+      this.$router.push({
+        path: "search",
+        query: { type: "keyword", value: this.keyword }
+      });
     }
   }
 };
@@ -153,6 +160,8 @@ export default {
 
 .foot-info {
   text-align: center;
+  color: gray;
+  font-size: small;
 }
 
 .nav .nav-item {

@@ -18,7 +18,9 @@
       <!-- 文章内容 -->
       <div class="article-content">
         <div class="article-title">
-          <div class="article-title-context">{{ article.title }}</div>
+          <div class="article-title-context">
+            {{ article.title }}
+          </div>
           <div class="articl-publised-time">
             {{ changeTime(article.publishedAt) }}
           </div>
