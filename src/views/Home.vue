@@ -79,6 +79,13 @@ export default {
     let coefficient = 0.618;
     this.carouselH = this.$refs.carousel.offsetWidth * coefficient;
     window.addEventListener("resize", () => {
+      // 不知为何，此处有时会报undefined错误
+      if (
+        this.$refs.carousel === undefined ||
+        this.$refs.carousel.offsetWidth === undefined
+      ) {
+        return;
+      }
       this.carouselH = this.$refs.carousel.offsetWidth * coefficient;
     });
 

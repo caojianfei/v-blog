@@ -1,39 +1,32 @@
 <template>
-  <div>
-    <h1>{{ token }}</h1>
-    <h1>{{ isLogin ? "登录" : "未登录" }}</h1>
-    <el-row class="form-container">
-      <el-col :span="8" :offset="8">
-        <el-form
-          :model="form"
-          label-width="auto"
-          :rules="rules"
-          ref="loginForm"
-        >
-          <el-form-item label="用户名" prop="email">
-            <el-input placeholder="请输入用户名" v-model="form.email">
-            </el-input>
-          </el-form-item>
-          <el-form-item label="密码" prop="password">
-            <el-input
-              placeholder="请输入密码"
-              v-model="form.password"
-              show-password
-            >
-            </el-input>
-          </el-form-item>
-          <el-form-item>
-            <el-button
-              :disabled="loading"
-              type="primary"
-              @click="submitForm('loginForm')"
-              >登录</el-button
-            >
-            <el-button @click="resetForm('loginForm')">重置</el-button>
-          </el-form-item>
-        </el-form>
-      </el-col>
-    </el-row>
+  <div class="container">
+    <div class="title">
+      <h2>欢迎登陆 vBlog 管理后台</h2>
+    </div>
+    <div class="form">
+      <el-form :model="form" label-width="auto" :rules="rules" ref="loginForm">
+        <el-form-item label="用户名" prop="email">
+          <el-input placeholder="请输入用户名" v-model="form.email"> </el-input>
+        </el-form-item>
+        <el-form-item label="密码" prop="password">
+          <el-input
+            placeholder="请输入密码"
+            v-model="form.password"
+            show-password
+          >
+          </el-input>
+        </el-form-item>
+        <el-form-item>
+          <el-button
+            :disabled="loading"
+            type="primary"
+            @click="submitForm('loginForm')"
+            >登录</el-button
+          >
+          <el-button @click="resetForm('loginForm')">重置</el-button>
+        </el-form-item>
+      </el-form>
+    </div>
   </div>
 </template>
 
@@ -103,9 +96,18 @@ export default {
 </script>
 
 <style scoped>
-.form-container {
+.container {
+  width: 100%;
+  height: 100%;
   display: flex;
-  min-height: 100vh;
+  flex-direction: column;
   align-items: center;
+}
+.container .form {
+  min-width: 300px;
+}
+.container .title {
+  height: 150px;
+  margin-top: 50px;
 }
 </style>
