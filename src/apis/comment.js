@@ -6,9 +6,8 @@ export function getComments(query = {}) {
 }
 
 export function auditComment(id, state) {
-  const url = `/admin/comment/${id}`;
-  const query = { state };
-  return http.put(url, { params: query });
+  const url = `/admin/comment/${id}?state=${state}`;
+  return http.put(url);
 }
 
 export function deleteComment(id) {
