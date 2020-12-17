@@ -8,12 +8,15 @@ import Dashboard from "../views/admin/dashboard/Dashboard";
 import Tags from "../views/admin/tags/Index";
 import Articles from "../views/admin/articles/Index";
 import Categories from "../views/admin/categories/Index";
+import Comments from "@/views/admin/comments/Index";
+
 import Home from "../views/Home";
 import Index from "../views/Index";
 import Post from "../views/Post";
 import About from "../views/About";
 import Contact from "../views/Contact";
 import Search from "../views/Search";
+
 const routes = [
   {
     path: "/login",
@@ -71,6 +74,11 @@ const routes = [
         path: "tags",
         component: Tags,
         meta: { name: "标签管理" }
+      },
+      {
+        path: "comments",
+        component: Comments,
+        meta: { name: "评论管理" }
       }
     ]
   },

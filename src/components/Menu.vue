@@ -26,6 +26,10 @@
       <i class="el-icon-collection-tag"> </i>
       <span slot="title">标签管理</span>
     </el-menu-item>
+    <el-menu-item index="/admin/comments">
+      <i class="el-icon-collection-tag"> </i>
+      <span slot="title">评论管理</span>
+    </el-menu-item>
   </el-menu>
 </template>
 

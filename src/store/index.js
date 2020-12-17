@@ -16,7 +16,7 @@ const store = new Vuex.Store({
 
 const token = localStorage.getItem("token");
 if (token !== "" && token !== null && token !== undefined) {
-  store.commit("auth/setToken", {token: token, storage: false});
+  store.commit("auth/setToken", { token: token, storage: false });
 }
 
 export default store;

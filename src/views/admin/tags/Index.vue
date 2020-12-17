@@ -6,13 +6,13 @@
       </el-form-item>
       <el-form-item>
         <el-button icon="el-icon-search" type="primary" @click="onSubmit"
-          >查询</el-button
-        >
+          >查询
+        </el-button>
       </el-form-item>
       <el-form-item>
         <el-button icon="el-icon-plus" type="danger" @click="handleCreate"
-          >添加</el-button
-        >
+          >添加
+        </el-button>
       </el-form-item>
     </el-form>
 
@@ -24,24 +24,24 @@
       size="medium"
       :fit="true"
     >
-      <el-table-column prop="id" label="ID"> </el-table-column>
-      <el-table-column prop="name" label="标签名称"> </el-table-column>
-      <el-table-column prop="description" label="标签描述"> </el-table-column>
-      <el-table-column prop="createdAt" label="创建时间"> </el-table-column>
-      <el-table-column prop="updatedAt" label="更新时间"> </el-table-column>
+      <el-table-column prop="id" label="ID"></el-table-column>
+      <el-table-column prop="name" label="标签名称"></el-table-column>
+      <el-table-column prop="description" label="标签描述"></el-table-column>
+      <el-table-column prop="createdAt" label="创建时间"></el-table-column>
+      <el-table-column prop="updatedAt" label="更新时间"></el-table-column>
       <el-table-column label="操作">
         <template slot-scope="scope">
           <el-button size="mini" @click="handleEdit(scope.$index, scope.row)"
-            >编辑</el-button
-          >
+            >编辑
+          </el-button>
           &nbsp;
           <el-popconfirm
             title="确定删除该标签？"
             @onConfirm="handleDelete(scope.row)"
           >
             <el-button slot="reference" size="mini" type="danger"
-              >删除</el-button
-            >
+              >删除
+            </el-button>
           </el-popconfirm>
         </template>
       </el-table-column>
@@ -68,7 +68,7 @@
         label-width="100"
       >
         <el-form-item label="标签名称" prop="name">
-          <el-input v-model="dialog.form.name"> </el-input>
+          <el-input v-model="dialog.form.name"></el-input>
         </el-form-item>
         <el-form-item label="标签描述" prop="description">
           <el-input type="textarea" :rows="2" v-model="dialog.form.description">
@@ -78,8 +78,8 @@
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialog.visible = false">取 消</el-button>
         <el-button type="primary" @click="submitEdit('editForm')"
-          >确 定</el-button
-        >
+          >确 定
+        </el-button>
       </div>
     </el-dialog>
   </el-card>
