@@ -7,12 +7,12 @@
             <img src="../assets/nav.png" alt="" /></div
         ></el-col>
         <el-col :xs="16" :sm="6" class="nav-item"
-          ><div class="nav-logo">
-            <div class="logo-container">
+          ><div class="nav-logo" @click="toIndex">
+            <div class="logo-container hidden-xs-only">
               <img src="../assets/logo.png" alt="" />
             </div>
             <div class="logo-title">
-              <span>vBlog</span>
+              <span>Jefrey`s Blog</span>
             </div>
           </div></el-col
         >
@@ -62,7 +62,7 @@
               fit="cover"
               :src="require('../assets/logo.png')"
             ></el-avatar>
-            <span class="drawer-nav-title">vBlog</span>
+            <span class="drawer-nav-title">Jefrey`s Blog</span>
           </div>
           <div class="drawer-nav-menu" style="text-align: center">
             <el-menu :default-active="activeIndex" @select="handleSelect">
@@ -138,6 +138,9 @@ export default {
         path: "search",
         query: { type: "keyword", value: this.keyword }
       });
+    },
+    toIndex() {
+      this.$router.push("/");
     }
   }
 };
@@ -184,6 +187,7 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
+  cursor: pointer;
 }
 .nav-logo .logo-container {
   width: 30px;
@@ -193,6 +197,17 @@ export default {
 .nav-logo .logo-container img {
   width: 100%;
   height: 100%;
+  border-radius: 50%;
+}
+.logo-title span {
+  font-family: Tahoma, Arial, Verdana -apple-system, BlinkMacSystemFont,
+    "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji",
+    "Segoe UI Emoji", "Segoe UI Symbol";
+}
+.drawer-nav-logo span {
+  font-family: Tahoma, Arial, Verdana -apple-system, BlinkMacSystemFont,
+    "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji",
+    "Segoe UI Emoji", "Segoe UI Symbol";
 }
 .nav-menu {
   display: flex;

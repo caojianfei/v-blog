@@ -4,31 +4,18 @@
       <!-- 顶部轮播图 -->
       <div class="carousel-container" ref="carousel">
         <el-carousel indicator-position="none" :height="carouselH + 'px'">
-          <el-carousel-item class="carousel-item">
+          <el-carousel-item
+            v-for="carousel in carousels"
+            class="carousel-item"
+            v-bind:key="carousel"
+          >
             <el-image
               class="carousel-image"
-              :src="require('../assets/a.jpg')"
+              :src="carousel"
               alt=""
               :fit="fit"
               style="height: 100%;"
-            />
-          </el-carousel-item>
-          <el-carousel-item class="carousel-item">
-            <el-image
-              class="carousel-image"
-              :src="require('../assets/b.jpg')"
-              alt=""
-              :fit="fit"
-              style="height: 100%;"
-            />
-          </el-carousel-item>
-          <el-carousel-item class="carousel-item">
-            <el-image
-              class="carousel-image"
-              :src="require('../assets/c.jpg')"
-              alt=""
-              :fit="fit"
-              style="height: 100%;"
+              @click="$message.warning('别点了，暂时没用！')"
             />
           </el-carousel-item>
         </el-carousel>
@@ -44,19 +31,21 @@
               :article="article"
             ></Article>
           </div>
+          <div class="article-loading" v-if="loading">正在努力加载...</div>
         </el-col>
-        <div class="article-loading" v-if="loading">正在努力加载...</div>
         <!--right-->
         <el-col :xs="24" :sm="{ span: 9, push: 1 }"
           ><div class="grid-content">
-            <el-card class="articl-tag-container no-border-radius">
+            <el-card class="article-tag-container no-border-radius">
               <el-button
+                style="margin: 5px;"
                 v-for="tag in tags"
                 v-bind:key="tag.id"
                 :type="tag.type"
                 size="mini"
+                plain
                 @click="searchTag(tag)"
-                >{{ tag.name }} [{{ tag.articleCount }}]</el-button
+                >{{ tag.name }} [{{ tag["articleCount"] }}]</el-button
               >
             </el-card>
           </div></el-col
@@ -69,6 +58,9 @@
 <script>
 import Article from "@/components/Article";
 import { getTagList, getArticleList } from "../apis/front/front";
+import code1 from "@/assets/code1.jpg";
+import code2 from "@/assets/code2.jpeg";
+import code3 from "@/assets/code3.jpg";
 export default {
   name: "home",
   components: {
@@ -102,7 +94,8 @@ export default {
       pageSize: 10,
       total: 0,
       loading: false,
-      tags: []
+      tags: [],
+      carousels: [code1, code2, code3]
     };
   },
   methods: {
@@ -132,12 +125,12 @@ export default {
       } = result;
       if (code === 0) {
         list.forEach(tag => {
-          if (tag.articleCount >= 20) {
+          if (tag["articleCount"] >= 20) {
             tag.type = "danger";
-          } else if (tag.articleCount >= 10 && tag.articleCount < 20) {
+          } else if (tag["articleCount"] >= 10 && tag["articleCount"] < 20) {
             tag.type = "warning";
           } else {
-            tag.type = "info";
+            tag.type = "success";
           }
         });
         this.tags = list;
@@ -156,7 +149,7 @@ export default {
       const scrollTop = el.scrollTop;
 
       // 屏幕滚动到底部
-      if (contentHeight - clientHeight - scrollTop == 0) {
+      if (contentHeight - clientHeight - scrollTop === 0) {
         const isEnd = this.articles.length >= this.total;
         if (this.loading === false && isEnd === false) {
           this.getArticles();
@@ -185,9 +178,7 @@ export default {
   width: 100%;
   height: auto;
 }
-.article-tag {
-  margin: 5px;
-}
+
 .article-loading {
   text-align: center;
   padding: 20px;

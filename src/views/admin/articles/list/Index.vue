@@ -46,15 +46,37 @@
 
     <el-table
       v-loading="listLoading"
-      :data="artiles"
+      :data="articles"
       style="width: 100%;"
       :border="false"
       size="medium"
       :fit="true"
     >
-      <el-table-column prop="id" label="ID"> </el-table-column>
-      <el-table-column prop="title" label="文章标题"> </el-table-column>
-      <el-table-column prop="category.name" label="文章分类"> </el-table-column>
+      <el-table-column prop="id" width="50" label="ID"> </el-table-column>
+      <el-table-column prop="title" label="文章标题">
+        <template slot-scope="scope">
+          <router-link
+            target="_blank"
+            style="text-decoration:none;color:#00BCD4;"
+            :to="`/post/${scope.row.id}?preview=1`"
+            >{{ scope.row.title }}</router-link
+          >
+        </template>
+      </el-table-column>
+      <el-table-column
+        prop="category.name"
+        width="80"
+        label="文章分类"
+      ></el-table-column>
+      <el-table-column prop="isDraft" width="80" label="是否发布">
+        <template slot-scope="scope">
+          <el-tag v-if="scope.row.isDraft === 0" size="mini" type="success"
+            >是</el-tag
+          >
+          <el-tag v-else size="mini" type="warning">否</el-tag>
+        </template>
+      </el-table-column>
+      <el-table-column prop="publishedAt" label="发布时间"> </el-table-column>
       <el-table-column prop="createdAt" label="创建时间"> </el-table-column>
       <el-table-column prop="updatedAt" label="更新时间"> </el-table-column>
       <el-table-column label="操作">
@@ -106,7 +128,7 @@ export default {
         type: "all"
       },
       listLoading: false,
-      artiles: [],
+      articles: [],
       page: 1,
       pageSize: 10,
       total: 0
@@ -123,14 +145,17 @@ export default {
       this.loading = true;
       searchCategories(query)
         .then(res => {
-          if (res.code === 0) {
-            this.categories = res.data.list || [];
+          const {
+            code,
+            data: { list }
+          } = res;
+          if (code === 0) {
+            this.categories = list ?? [];
           }
         })
         .finally(() => (this.loading = false));
     },
     onSubmit() {
-      console.log("this.form", this.form);
       this.getArticles();
     },
     handleCreate() {
@@ -160,7 +185,6 @@ export default {
     },
     getArticles() {
       const query = this.formatQueryParam();
-      console.log("query", query);
       let param = {};
       const { categoryId, title, isDraft, page, pageSize } = query;
       if (categoryId > 0) {
@@ -180,9 +204,10 @@ export default {
       }
       getArticles(param)
         .then(res => {
-          if (res.code === 0) {
-            const { list, page, pageSize, total } = res.data;
-            this.artiles = list;
+          const { code, data } = res;
+          if (code === 0) {
+            const { list, page, pageSize, total } = data;
+            this.articles = list;
             this.page = page;
             this.pageSize = pageSize;
             this.total = total;
@@ -196,7 +221,7 @@ export default {
       if (categoryId > 0) {
         param.categoryId = categoryId;
       }
-      if (title !== undefined && title !== null && title.length > 0) {
+      if (title !== undefined && title.length > 0) {
         param.title = title;
       }
       if (type === "published" || type === "draft") {
@@ -205,6 +230,9 @@ export default {
       param.page = this.page;
       param.pageSize = this.pageSize;
       return param;
+    },
+    viewArticle(id) {
+      this.$router.push(`/post/${id}`);
     }
   }
 };

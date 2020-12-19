@@ -18,8 +18,8 @@ export function getArticleList(param) {
   return http.get("/articles", { params: param });
 }
 
-export function getArticleInfo(id) {
-  return http.get(`/article/${id}`);
+export function getArticleInfo(id, param) {
+  return http.get(`/article/${id}`, { params: param });
 }
 
 export function getArticleCommentList(articleId) {

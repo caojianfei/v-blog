@@ -1,6 +1,6 @@
 <template>
   <div class="main-content">
-    <div class="article">
+    <div v-if="!empty" class="article">
       <el-image
         v-if="article.headImageUrl"
         class="article-image"
@@ -73,6 +73,19 @@
         </div>
       </div>
     </div>
+    <div
+      v-if="empty"
+      style="display: flex;flex-direction: column;align-items: center;margin-top: 180px;"
+    >
+      <img
+        alt=""
+        style="width: 100%;max-width: 280px;"
+        :src="require('../assets/cry.png')"
+      />
+      <div style="color: #606266; margin-top: 20px; text-align:center;">
+        文章竟然不翼而飞了 ...
+      </div>
+    </div>
   </div>
 </template>
 
@@ -87,7 +100,11 @@ export default {
   name: "Post",
   data() {
     return {
-      article: {},
+      article: {
+        headImageUrl: ""
+      },
+      loading: false,
+      empty: false,
       articleHtml: "",
       comment: {
         nickname: "",
@@ -145,17 +162,26 @@ export default {
       await this.getComments();
     }
   },
+  updated() {
+    console.log("updated");
+    window.scrollTo(0, 0);
+  },
   methods: {
     renderComment(content) {
       return this.$markDown.render(content);
     },
     async getArticle(id) {
-      const result = await getArticleInfo(id);
+      const { preview } = this.$route.query;
+      this.loading = true;
+      const result = await getArticleInfo(id, { preview });
       const { code, data } = result;
       if (code === 0) {
         this.article = data;
         this.articleHtml = this.$markDown.render(this.article.content);
+      } else {
+        this.empty = true;
       }
+      this.loading = false;
     },
     async addCommit() {
       const { nickname, email, content } = this.comment;
@@ -282,10 +308,7 @@ export default {
 .comment-content {
   /* margin-left: 10px; */
   background: #f8f8f8;
-  padding-left: 10px;
-  padding-right: 10px;
-  padding-top: 15px;
-  padding-bottom: 15px;
+  padding: 15px 10px 15px 10px;
   border-radius: 5px;
 }
 

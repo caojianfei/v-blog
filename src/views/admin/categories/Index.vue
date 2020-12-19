@@ -209,7 +209,6 @@ export default {
       query.pageSize = pageSize;
       getCategories(query)
         .then(res => {
-          console.log("getCategories", res);
           const { code, message, data } = res;
           if (code !== 0) {
             this.$message.error(message || "分类列表获取失败");

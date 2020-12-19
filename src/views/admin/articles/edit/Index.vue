@@ -98,7 +98,7 @@
           </el-switch>
         </div>
 
-        <div v-if="form.isDraft" class="setting-item">
+        <div class="setting-item">
           <label>发布时间</label>
           <el-date-picker
             v-model="form.publishedAt"
@@ -155,17 +155,9 @@ export default {
       this.id = id;
       this.searchArticle(id);
     }
-    // console.log(params);
   },
   methods: {
-    // onMavonEditChange(value, render) {
-    //   console.log("value: ", value);
-    //   console.log("render", render);
-    //   //this.form.content = value;
-    // },
     submit() {
-      // console.log(this.form);
-      // return;
       let categoryId = parseInt(this.form.categoryId);
       if (isNaN(categoryId) || categoryId <= 0) {
         this.$message.error("文章分类为空或填写错误");
@@ -180,26 +172,16 @@ export default {
         return false;
       }
 
-      if (this.form.isDraft) {
-        if (
-          this.form.publishedAt === "" ||
-          this.form.publishedAt === null ||
-          this.form.publishedAt === undefined
-        ) {
-          this.$message.error("文章发布时间必填");
-          return false;
-        }
-      }
-
       let body = { ...this.form };
-      if (body.publishedAt !== "" && this.form.isDraft) {
+      if (body.publishedAt !== "") {
         body.publishedAt = body.publishedAt.Format("yyyy-MM-dd HH:mm:ss");
       }
       body.isDraft = body.isDraft ? 1 : 0;
       if (this.id > 0) {
         editArticle(this.id, body)
           .then(res => {
-            if (res.code === 0) {
+            const { code } = res;
+            if (code === 0) {
               this.$message.success("文章更新成功");
               this.$router.replace("/admin/articles");
             } else {
@@ -216,7 +198,8 @@ export default {
       } else {
         createArticle(body)
           .then(res => {
-            if (res.code === 0) {
+            const { code } = res;
+            if (code === 0) {
               this.$message.success("文章添加成功");
               this.$router.replace("/admin/articles");
             } else {
@@ -258,32 +241,35 @@ export default {
         .catch(() => this.$message.error("分类查询失败"))
         .finally(() => (this.tagQueryLoading = false));
     },
-    onImageUploaded(res, file, fileList) {
-      console.log("res", res);
-      console.log("file", file);
-      console.log("fileList", fileList);
-      this.uploadImages = res.data.list;
-      console.log(this.uploadImages);
-      this.form.headImage = res.data.list[0].md5;
+    onImageUploaded(res) {
+      const {
+        code,
+        data: { list }
+      } = res;
+      if (code !== 0) {
+        this.$message.error("上传失败");
+        return;
+      }
+      this.uploadImages = list;
+      this.form.headImage = list[0]["md5"];
     },
-    onImageRemove(file, fileList) {
-      console.log("file", file);
-      console.log("fileList", fileList);
+    onImageRemove() {
       this.form.headImage = "";
     },
     searchArticle(id) {
       showArticle(id).then(res => {
-        if (res.code !== 0) {
-          this.$message.error(res.message);
+        const { code, data, message } = res;
+        const { headImageFile } = data;
+        if (code !== 0) {
+          this.$message.error(message);
           return;
         }
-        let { data } = res;
         this.form.title = data.title;
         if (data.headImage !== "") {
           this.uploadImages = [
             {
-              name: data.headImageFile.name,
-              url: data.headImageFile.url
+              name: headImageFile.name,
+              url: headImageFile.url
             }
           ];
         }
@@ -296,11 +282,10 @@ export default {
         this.form.intro = data.intro;
         this.form.categoryId = data.category.id;
         this.form.isDraft = data.isDraft === 1;
-        if (data.isDraft === 1) {
-          this.form.publishedAt = new Date(
-            Date.parse(data.publishedAt.replace(/-/g, "/"))
-          );
-        }
+        this.form.publishedAt = new Date(
+          Date.parse(data.publishedAt.replace(/-/g, "/"))
+        );
+
         if (data.tags.length > 0) {
           let tags = [];
           let tagValues = [];
@@ -318,9 +303,9 @@ export default {
       });
     },
     onEditImageAdd(pos, file) {
-      let formdata = new FormData();
-      formdata.append("images", file);
-      uploadFile(formdata).then(res => {
+      let formData = new FormData();
+      formData.append("images", file);
+      uploadFile(formData).then(res => {
         const { code, message, data } = res;
         if (code === 0) {
           const { list } = data;
