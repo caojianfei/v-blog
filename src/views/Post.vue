@@ -162,10 +162,6 @@ export default {
       await this.getComments();
     }
   },
-  updated() {
-    console.log("updated");
-    window.scrollTo(0, 0);
-  },
   methods: {
     renderComment(content) {
       return this.$markDown.render(content);

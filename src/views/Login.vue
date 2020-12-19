@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <div class="title">
-      <h2>欢迎登陆 vBlog 管理后台</h2>
+      <h2>欢迎登陆 Blog 管理后台</h2>
     </div>
     <div class="form">
       <el-form :model="form" label-width="auto" :rules="rules" ref="loginForm">
@@ -51,7 +51,6 @@ export default {
     };
   },
   mounted() {
-    console.log(this.isLogin);
     if (this.isLogin === true) {
       this.$router.replace("/admin");
     }

@@ -10,21 +10,18 @@ export default {
   },
   mutations: {
     setToken(state, { token, storage }) {
-      console.log("setToken", token, storage);
       if (storage === true) {
         localStorage.setItem("token", token);
       }
       state.token = token;
     },
     clearToken(state) {
-      console.info("auth state mutations clearToken", state);
       state.token = "";
       localStorage.removeItem("token");
     }
   },
   actions: {
     login({ commit }, passport) {
-      console.log("actions login", passport);
       return new Promise((resolve, reject) => {
         login(passport)
           .then(res => {
@@ -41,7 +38,6 @@ export default {
             resolve({ code, message });
           })
           .catch(err => {
-            console.error(err);
             reject(err);
           });
       });
