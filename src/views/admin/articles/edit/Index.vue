@@ -173,7 +173,11 @@ export default {
       }
 
       let body = { ...this.form };
-      if (body.publishedAt !== "") {
+      if (
+        body.publishedAt !== "" &&
+        body.publishedAt !== null &&
+        body.publishedAt !== undefined
+      ) {
         body.publishedAt = body.publishedAt.Format("yyyy-MM-dd HH:mm:ss");
       }
       body.isDraft = body.isDraft ? 1 : 0;
