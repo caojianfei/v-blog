@@ -62,14 +62,11 @@ export default {
   },
   methods: {
     ...mapMutations("page", ["closeNav", "openNav"]),
-    test(from) {
-      console.log("test method, form " + from);
+    handleOpen() {
+      // console.log(key, keyPath);
     },
-    handleOpen(key, keyPath) {
-      console.log(key, keyPath);
-    },
-    handleClose(key, keyPath) {
-      console.log(key, keyPath);
+    handleClose() {
+      // console.log(key, keyPath);
     }
   }
 };

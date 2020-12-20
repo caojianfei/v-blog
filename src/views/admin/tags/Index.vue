@@ -204,7 +204,6 @@ export default {
       query.pageSize = pageSize;
       getTags(query)
         .then(res => {
-          // console.log(res);
           const { code, message, data } = res;
           if (code !== 0) {
             this.$message.error(message || "标签列表获取失败");
@@ -216,8 +215,7 @@ export default {
           this.pageSize = pageSize;
           this.total = total;
         })
-        .catch(err => {
-          console.log(err);
+        .catch(() => {
           this.$message.error("请求出错啦");
         })
         .finally(() => {

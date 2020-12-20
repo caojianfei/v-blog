@@ -218,7 +218,6 @@ export default {
     searchCategory(query) {
       this.categoryQueryLoading = true;
       if (query === "" || name === undefined || name === null) {
-        console.log("query", query);
         this.categoryQueryLoading = false;
         return;
       }
@@ -231,7 +230,6 @@ export default {
     searchTag(query) {
       this.tagQueryLoading = true;
       if (query === "" || name === undefined || name === null) {
-        console.log("query", query);
         this.tagQueryLoading = false;
         return;
       }

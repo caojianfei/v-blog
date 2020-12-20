@@ -181,7 +181,6 @@ export default {
     },
     async addCommit() {
       const { nickname, email, content } = this.comment;
-      console.log(nickname, email, content);
       if (content === "") {
         this.$message.warning("评论内容不能为空");
         return;
