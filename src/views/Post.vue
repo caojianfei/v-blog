@@ -263,7 +263,7 @@ export default {
   background: #ffffff;
   margin-left: auto;
   margin-right: auto;
-  margin-top: 20px;
+  margin-top: 10px;
 }
 .article-image {
   border-top-left-radius: 5px;

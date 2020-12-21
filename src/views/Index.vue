@@ -140,7 +140,9 @@ export default {
       });
     },
     toIndex() {
-      this.$router.push("/");
+      if (this.$route.fullPath !== "/") {
+        this.$router.push("/");
+      }
     }
   }
 };

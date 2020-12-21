@@ -34,9 +34,8 @@
             style="border: none;"
             type="danger"
             plain
-          >阅读全文
-          </el-button
-          >
+            >阅读全文
+          </el-button>
           <div>
             <div class="icon-container">
               <i class="el-icon-view"></i>
@@ -73,10 +72,8 @@ export default {
     if (this.$refs.articleImage) {
       this.articleImageHeigth = this.$refs.articleImage.offsetWidth * 0.5;
       window.addEventListener("resize", () => {
-        if (this.$refs.articleImage.offsetWidth !== undefined) {
-          if (this.$refs.articleImage) {
-            this.articleImageHeigth = this.$refs.articleImage.offsetWidth * 0.5;
-          }
+        if (this.$refs.articleImage && this.$refs.articleImage.offsetWidth) {
+          this.articleImageHeigth = this.$refs.articleImage.offsetWidth * 0.5;
         }
       });
     }
