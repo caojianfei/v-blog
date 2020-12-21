@@ -6,9 +6,7 @@
         <el-col :span="3" :md="2" :xs="6">
           <el-dropdown>
             <span class="el-dropdown-link">
-              <el-avatar
-                src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"
-              ></el-avatar>
+              <el-avatar :src="require('@/assets/logo.png')"></el-avatar>
             </span>
             <el-dropdown-menu slot="dropdown">
               <el-dropdown-item>

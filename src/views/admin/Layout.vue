@@ -16,7 +16,7 @@
         </el-main>
         <el-footer style="background: #f0f2f5">
           <div class="footer">
-            Copyright©杭州****有限公司 浙ICP备*****号
+            Copyright©caojf.com just for Jeffrey
           </div>
         </el-footer>
       </el-container>

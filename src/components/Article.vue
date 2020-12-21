@@ -34,7 +34,8 @@
             style="border: none;"
             type="danger"
             plain
-            >阅读全文</el-button
+          >阅读全文
+          </el-button
           >
           <div>
             <div class="icon-container">
@@ -54,6 +55,7 @@
 
 <script>
 import moment from "moment";
+
 export default {
   name: "Article",
   props: {
@@ -71,7 +73,11 @@ export default {
     if (this.$refs.articleImage) {
       this.articleImageHeigth = this.$refs.articleImage.offsetWidth * 0.5;
       window.addEventListener("resize", () => {
-        this.articleImageHeigth = this.$refs.articleImage.offsetWidth * 0.5;
+        if (this.$refs.articleImage.offsetWidth !== undefined) {
+          if (this.$refs.articleImage) {
+            this.articleImageHeigth = this.$refs.articleImage.offsetWidth * 0.5;
+          }
+        }
       });
     }
   },
@@ -90,6 +96,7 @@ export default {
 .article-item {
   margin-bottom: 20px;
 }
+
 /* .article-image {
   width: 100%;
   height: 100px;
@@ -97,11 +104,13 @@ export default {
 .article-content {
   margin: 20px;
 }
+
 .article-title-context {
   font-weight: 500;
   font-size: 24px;
   margin-bottom: 10px;
 }
+
 .articl-publised-time {
   color: #cccccc;
   margin-bottom: 10px;
@@ -123,15 +132,18 @@ export default {
   font-size: small;
   color: #909399;
 }
+
 .el-icon-view,
 .el-icon-chat-square {
   font-size: 20px;
   font-weight: 1000;
 }
+
 .icon-container {
   display: inline-flex;
   align-items: center;
 }
+
 .icon-container:first-child {
   padding-right: 5px;
 }

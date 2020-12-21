@@ -2,26 +2,26 @@
   <div class="a-container">
     <div class="main-content">
       <!-- 顶部轮播图 -->
-      <div class="carousel-container" ref="carousel">
-        <el-carousel indicator-position="none" :height="carouselH + 'px'">
-          <el-carousel-item
-            v-for="carousel in carousels"
-            class="carousel-item"
-            v-bind:key="carousel"
-          >
-            <el-image
-              class="carousel-image"
-              :src="carousel"
-              alt=""
-              :fit="fit"
-              style="height: 100%;"
-              @click="$message.warning('别点了，暂时没用！')"
-            />
-          </el-carousel-item>
-        </el-carousel>
-      </div>
+      <!--      <div class="carousel-container" ref="carousel">-->
+      <!--        <el-carousel indicator-position="none" :height="carouselH + 'px'">-->
+      <!--          <el-carousel-item-->
+      <!--            v-for="carousel in carousels"-->
+      <!--            class="carousel-item"-->
+      <!--            v-bind:key="carousel"-->
+      <!--          >-->
+      <!--            <el-image-->
+      <!--              class="carousel-image"-->
+      <!--              :src="carousel"-->
+      <!--              alt=""-->
+      <!--              :fit="fit"-->
+      <!--              style="height: 100%;"-->
+      <!--              @click="$message.warning('别点了，暂时没用！')"-->
+      <!--            />-->
+      <!--          </el-carousel-item>-->
+      <!--        </el-carousel>-->
+      <!--      </div>-->
 
-      <el-row style="margin-top: 20px;">
+      <el-row style="margin-top: 10px;">
         <!--left-->
         <el-col :xs="24" :sm="14" style="padding: 0;">
           <div class="article-list">
@@ -34,7 +34,7 @@
           <div class="article-loading" v-if="loading">正在努力加载...</div>
         </el-col>
         <!--right-->
-        <el-col :xs="24" :sm="{ span: 9, push: 1 }"
+        <el-col :xs="24" :sm="10"
           ><div class="grid-content">
             <el-card class="article-tag-container no-border-radius">
               <el-button
@@ -67,20 +67,19 @@ export default {
     Article
   },
   mounted() {
-    window.addEventListener("scroll", this.onScroll, true);
-    let coefficient = 0.618;
-    this.carouselH = this.$refs.carousel.offsetWidth * coefficient;
-    window.addEventListener("resize", () => {
-      // 不知为何，此处有时会报undefined错误
-      if (
-        this.$refs.carousel === undefined ||
-        this.$refs.carousel.offsetWidth === undefined
-      ) {
-        return;
-      }
-      this.carouselH = this.$refs.carousel.offsetWidth * coefficient;
-    });
-
+    // window.addEventListener("scroll", this.onScroll, true);
+    // let coefficient = 0.618;
+    // this.carouselH = this.$refs.carousel.offsetWidth * coefficient;
+    // window.addEventListener("resize", () => {
+    //   // 不知为何，此处有时会报undefined错误
+    //   if (
+    //     this.$refs.carousel === undefined ||
+    //     this.$refs.carousel.offsetWidth === undefined
+    //   ) {
+    //     return;
+    //   }
+    //   this.carouselH = this.$refs.carousel.offsetWidth * coefficient;
+    // });
     this.getArticles();
     this.getTags();
   },
@@ -95,7 +94,12 @@ export default {
       total: 0,
       loading: false,
       tags: [],
-      carousels: [code1, code2, code3]
+      carousels: [
+        "https://gitee.com/cjf123/file-repository/raw/master/17742555.jpeg",
+        code1,
+        code2,
+        code3
+      ]
     };
   },
   methods: {
@@ -184,5 +188,16 @@ export default {
   padding: 20px;
   color: #606266;
   font-size: smaller;
+}
+
+.article-tag-container {
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+@media screen and (max-width: 767px) {
+  .article-tag-container {
+    margin: 0;
+  }
 }
 </style>
