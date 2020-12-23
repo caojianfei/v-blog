@@ -84,7 +84,7 @@
     </el-main>
     <el-footer class="footer">
       <div class="foot-info">
-        <div>©2020 - 2022 caojf.com All Rights Reserved.</div>
+        <div>©2018 - 2022 caojf.com All Rights Reserved.</div>
         <div style="margin-top: 5px;">无尽的折腾，才是人生的主旋律</div>
       </div>
     </el-footer>
