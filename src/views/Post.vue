@@ -117,6 +117,7 @@ export default {
         boxShadow: false,
         subfield: false,
         toolbarsFlag: true,
+        autofocus: false,
         toolbars: {
           bold: false, // 粗体
           italic: false, // 斜体

@@ -84,7 +84,7 @@
     </el-main>
     <el-footer class="footer">
       <div class="foot-info">
-        <div>©2018 - 2022 caojf.com All Rights Reserved.</div>
+        <div>©2018 - 2022 caojf.com All Rights Reserved. <a href="https://beian.miit.gov.cn" target="_blank">浙ICP备16047802号</a></div>
         <div style="margin-top: 5px;">无尽的折腾，才是人生的主旋律</div>
       </div>
     </el-footer>
@@ -244,5 +244,9 @@ export default {
 .drawer-nav-title {
   display: block;
   margin-top: 5px;
+}
+.foot-info a {
+  text-decoration: none;
+  color: gray;
 }
 </style>
