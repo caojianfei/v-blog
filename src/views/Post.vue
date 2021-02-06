@@ -50,8 +50,8 @@
                     class="submit-commit-button"
                     size="small"
                     plain
-                    >提交评论</el-button
-                  >
+                    >提交评论
+                  </el-button>
                 </div>
               </el-col>
             </el-row>
@@ -96,6 +96,7 @@ import {
   getArticleCommentList
 } from "../apis/front/front";
 import moment from "moment";
+
 export default {
   name: "Post",
   data() {
@@ -156,29 +157,33 @@ export default {
       }
     };
   },
+  beforeRouteEnter(to, from, next) {
+    getArticleInfo(to.params.id).then(res => {
+      const { code, data } = res;
+      next(vm => {
+        if (code === 0) {
+          // seo 信息设置
+          document.title = data.title;
+          document
+            .querySelector('meta[name="keywords"]')
+            .setAttribute("content", data.intro);
+          document
+            .querySelector('meta[name="description"]')
+            .setAttribute("content", data.intro);
+          vm.article = data;
+          vm.articleHtml = vm.$markDown.render(data.content);
+          return;
+        }
+        vm.empty = true;
+      });
+    });
+  },
   async mounted() {
-    const { id } = this.$route.params;
-    if (id > 0) {
-      await this.getArticle(id);
-      await this.getComments();
-    }
+    await this.getComments(this.$route.params.id);
   },
   methods: {
     renderComment(content) {
       return this.$markDown.render(content);
-    },
-    async getArticle(id) {
-      const { preview } = this.$route.query;
-      this.loading = true;
-      const result = await getArticleInfo(id, { preview });
-      const { code, data } = result;
-      if (code === 0) {
-        this.article = data;
-        this.articleHtml = this.$markDown.render(this.article.content);
-      } else {
-        this.empty = true;
-      }
-      this.loading = false;
     },
     async addCommit() {
       const { nickname, email, content } = this.comment;
@@ -224,8 +229,11 @@ export default {
       this.comment = Object.assign({}, { nickname, email, content });
     },
 
-    async getComments() {
-      const result = await getArticleCommentList(this.article.id);
+    async getComments(articleId) {
+      if (!(articleId > 0)) {
+        return;
+      }
+      const result = await getArticleCommentList(articleId);
       let {
         code,
         data: { list }
@@ -244,21 +252,25 @@ export default {
 <style scoped>
 .main-content {
 }
+
 .article-title {
   font-weight: bold;
   font-size: x-large;
   margin-bottom: 10px;
 }
+
 .article-content {
   padding-top: 20px;
   margin-left: 20px;
   margin-right: 20px;
   margin-bottom: 10px;
 }
+
 .article-published-time {
   color: #cccccc;
   font-size: small;
 }
+
 .article {
   max-width: 700px;
   background: #ffffff;
@@ -266,6 +278,7 @@ export default {
   margin-right: auto;
   margin-top: 10px;
 }
+
 .article-image {
   border-top-left-radius: 5px;
   border-top-right-radius: 5px;
@@ -288,6 +301,7 @@ export default {
   width: 100%;
   height: 100%;
 }
+
 .comment {
   margin: 20px;
 }
@@ -313,6 +327,7 @@ export default {
   font-weight: 600;
   color: darksalmon;
 }
+
 .comment-published-time {
   color: dimgrey;
 }

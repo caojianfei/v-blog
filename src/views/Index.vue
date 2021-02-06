@@ -1,5 +1,5 @@
 <template>
-  <el-container class="container">
+  <el-container class="container" v-loading.fullscreen.lock="routeLoading">
     <el-header class="header">
       <el-row :gutter="5" class="nav">
         <el-col :xs="4" class="hidden-sm-and-up nav-item"
@@ -12,7 +12,7 @@
               <img src="../assets/logo.png" alt="" />
             </div>
             <div class="logo-title">
-              <span>Jefrey`s Blog</span>
+              <span>Jefrey 的个人博客</span>
             </div>
           </div></el-col
         >
@@ -84,7 +84,12 @@
     </el-main>
     <el-footer class="footer">
       <div class="foot-info">
-        <div>©2018 - 2022 caojf.com All Rights Reserved. <a href="https://beian.miit.gov.cn" target="_blank">浙ICP备16047802号</a></div>
+        <div>
+          ©2018 - 2022 caojf.com All Rights Reserved.
+          <a href="https://beian.miit.gov.cn" target="_blank"
+            >浙ICP备16047802号</a
+          >
+        </div>
         <div style="margin-top: 5px;">无尽的折腾，才是人生的主旋律</div>
       </div>
     </el-footer>
@@ -92,6 +97,8 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
+
 export default {
   name: "index",
   components: {},
@@ -102,6 +109,11 @@ export default {
         this.activeIndex = menu.link;
       }
     });
+  },
+  computed: {
+    ...mapState("page", {
+      routeLoading: state => state.routeLoading
+    })
   },
   data() {
     return {

@@ -88,15 +88,30 @@ const routes = [
     children: [
       {
         path: "",
-        component: Home
+        component: Home,
+        meta: {
+          title: "Jeffrey的个人博客 - 首页",
+          keywords: "",
+          description: ""
+        }
       },
       {
         path: "contact",
-        component: Contact
+        component: Contact,
+        meta: {
+          title: "Jeffrey的个人博客 - 联系我",
+          keywords: "",
+          description: ""
+        }
       },
       {
         path: "about",
-        component: About
+        component: About,
+        meta: {
+          title: "Jeffrey的个人博客 - 关于我",
+          keywords: "",
+          description: ""
+        }
       },
       {
         path: "post/:id",
@@ -104,7 +119,12 @@ const routes = [
       },
       {
         path: "search",
-        component: Search
+        component: Search,
+        meta: {
+          title: "Jeffrey的个人博客 - 搜索",
+          keywords: "",
+          description: ""
+        }
       }
     ]
   }

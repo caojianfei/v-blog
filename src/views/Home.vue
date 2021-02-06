@@ -1,26 +1,6 @@
 <template>
   <div class="a-container">
     <div class="main-content">
-      <!-- 顶部轮播图 -->
-      <!--      <div class="carousel-container" ref="carousel">-->
-      <!--        <el-carousel indicator-position="none" :height="carouselH + 'px'">-->
-      <!--          <el-carousel-item-->
-      <!--            v-for="carousel in carousels"-->
-      <!--            class="carousel-item"-->
-      <!--            v-bind:key="carousel"-->
-      <!--          >-->
-      <!--            <el-image-->
-      <!--              class="carousel-image"-->
-      <!--              :src="carousel"-->
-      <!--              alt=""-->
-      <!--              :fit="fit"-->
-      <!--              style="height: 100%;"-->
-      <!--              @click="$message.warning('别点了，暂时没用！')"-->
-      <!--            />-->
-      <!--          </el-carousel-item>-->
-      <!--        </el-carousel>-->
-      <!--      </div>-->
-
       <el-row style="margin-top: 10px;">
         <!--left-->
         <el-col :xs="24" :sm="14" style="padding: 0;">
@@ -67,19 +47,7 @@ export default {
     Article
   },
   mounted() {
-    // window.addEventListener("scroll", this.onScroll, true);
-    // let coefficient = 0.618;
-    // this.carouselH = this.$refs.carousel.offsetWidth * coefficient;
-    // window.addEventListener("resize", () => {
-    //   // 不知为何，此处有时会报undefined错误
-    //   if (
-    //     this.$refs.carousel === undefined ||
-    //     this.$refs.carousel.offsetWidth === undefined
-    //   ) {
-    //     return;
-    //   }
-    //   this.carouselH = this.$refs.carousel.offsetWidth * coefficient;
-    // });
+    window.addEventListener("scroll", this.onScroll, true);
     this.getArticles();
     this.getTags();
   },
@@ -169,12 +137,7 @@ export default {
   width: 100%;
   display: flex;
   justify-content: center;
-  /* margin-top: 20px; */
   margin-bottom: 20px;
-}
-
-.carousel-container {
-  margin-top: 20px;
 }
 
 .main-content {

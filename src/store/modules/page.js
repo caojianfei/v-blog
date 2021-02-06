@@ -4,7 +4,8 @@ export default {
     navCollapse: false,
     screenWidth: document.body.clientWidth,
     screenHeight: document.body.clientHeight,
-    showBreadCrumb: true
+    showBreadCrumb: true,
+    routeLoading: false
   },
   mutations: {
     openNav(state) {
@@ -15,6 +16,12 @@ export default {
     },
     toggleNav(state) {
       state.navCollapse = !state.navCollapse;
+    },
+    beforeRouteEnter(state) {
+      state.routeLoading = true;
+    },
+    afterRouteEnter(state) {
+      state.routeLoading = false;
     }
   },
   actions: {}
