@@ -158,7 +158,7 @@ export default {
     };
   },
   beforeRouteEnter(to, from, next) {
-    getArticleInfo(to.params.id).then(res => {
+    getArticleInfo(to.params.id, { preview: to.query.preview }).then(res => {
       const { code, data } = res;
       next(vm => {
         if (code === 0) {
