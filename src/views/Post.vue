@@ -102,10 +102,12 @@ export default {
   data() {
     return {
       article: {
-        headImageUrl: ""
+        headImageUrl: "",
+        title: "",
+        publishedAt: ""
       },
       loading: false,
-      empty: false,
+      empty: true,
       articleHtml: "",
       comment: {
         nickname: "",
@@ -166,12 +168,13 @@ export default {
           document.title = data.title;
           document
             .querySelector('meta[name="keywords"]')
-            .setAttribute("content", data.intro);
+            .setAttribute("content", data.keywords);
           document
             .querySelector('meta[name="description"]')
             .setAttribute("content", data.intro);
           vm.article = data;
           vm.articleHtml = vm.$markDown.render(data.content);
+          vm.empty = false;
           return;
         }
         vm.empty = true;
