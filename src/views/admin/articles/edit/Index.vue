@@ -308,6 +308,7 @@ export default {
         this.form.publishedAt = new Date(
           Date.parse(data.publishedAt.replace(/-/g, "/"))
         );
+        this.form.keywords = data.keywords;
 
         if (data.tags.length > 0) {
           let tags = [];
