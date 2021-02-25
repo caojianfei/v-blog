@@ -20,6 +20,7 @@
         <h1>评论</h1>
         <div class="comment-edit">
           <mavon-editor
+            codeStyle="monokai-sublime"
             v-model="comment.content"
             class="mavon-edit"
             v-bind="commentEdit"
@@ -96,6 +97,7 @@ import {
   getArticleCommentList
 } from "../apis/front/front";
 import moment from "moment";
+import hljs from "highlight.js";
 
 export default {
   name: "Post",
@@ -156,7 +158,8 @@ export default {
           subfield: false, // 单双栏模式
           preview: true // 预览
         }
-      }
+      },
+      markdownIt: null
     };
   },
   beforeRouteEnter(to, from, next) {
@@ -173,7 +176,7 @@ export default {
             .querySelector('meta[name="description"]')
             .setAttribute("content", data.intro);
           vm.article = data;
-          vm.articleHtml = vm.$markDown.render(data.content);
+          vm.articleHtml = vm.getMarkdownIt().render(data.content);
           vm.empty = false;
           return;
         }
@@ -186,7 +189,7 @@ export default {
   },
   methods: {
     renderComment(content) {
-      return this.$markDown.render(content);
+      return this.getMarkdownIt().render(content);
     },
     async addCommit() {
       const { nickname, email, content } = this.comment;
@@ -247,6 +250,38 @@ export default {
         });
         this.comments = list;
       }
+    },
+
+    getMarkdownIt() {
+      if (this.markdownIt === null) {
+        let markdownIt = this.$markDown;
+        markdownIt.set({
+          highlight: function(str, lang) {
+            if (lang && hljs.getLanguage(lang)) {
+              try {
+                return (
+                  '<pre><div class="hljs"><code class="' +
+                  lang +
+                  '">' +
+                  hljs.highlight(lang, str, true).value +
+                  "</code></div></pre>"
+                );
+              } catch (e) {
+                console.error("highlight error: ", e);
+              }
+              return (
+                '<pre><code class="' +
+                lang +
+                '">' +
+                hljs.highlight(lang, str, true).value +
+                "</code></pre>"
+              );
+            }
+          }
+        });
+        this.markdownIt = markdownIt;
+      }
+      return this.markdownIt;
     }
   }
 };

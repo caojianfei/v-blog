@@ -29,6 +29,7 @@
     <el-row style="margin-top: 20px">
       <el-col :span="24">
         <mavon-editor
+          codeStyle="monokai-sublime"
           v-model="form.content"
           style="min-height: 500px;"
           ref="md"
@@ -308,6 +309,7 @@ export default {
         this.form.publishedAt = new Date(
           Date.parse(data.publishedAt.replace(/-/g, "/"))
         );
+        this.form.keywords = data.keywords;
 
         if (data.tags.length > 0) {
           let tags = [];
