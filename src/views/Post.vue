@@ -6,7 +6,10 @@
         class="article-image"
         fit="cover"
         :src="article.headImageUrl"
-      ></el-image>
+        :preview-src-list="article.previewHeadImage"
+      >
+        ></el-image
+      >
 
       <div class="article-content">
         <div class="article-title">{{ article.title }}</div>
@@ -106,7 +109,8 @@ export default {
       article: {
         headImageUrl: "",
         title: "",
-        publishedAt: ""
+        publishedAt: "",
+        previewHeadImage: []
       },
       loading: false,
       empty: true,
@@ -175,6 +179,7 @@ export default {
           document
             .querySelector('meta[name="description"]')
             .setAttribute("content", data.intro);
+          data.previewHeadImage = [data.headImageUrl];
           vm.article = data;
           vm.articleHtml = vm.getMarkdownIt().render(data.content);
           vm.empty = false;
