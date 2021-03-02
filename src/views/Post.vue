@@ -79,14 +79,19 @@
     </div>
     <div
       v-if="empty"
-      style="display: flex;flex-direction: column;align-items: center;margin-top: 180px;"
+      style="
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-top: 180px;
+      "
     >
       <img
         alt=""
-        style="width: 100%;max-width: 280px;"
+        style="width: 100%; max-width: 280px"
         :src="require('../assets/cry.png')"
       />
-      <div style="color: #606266; margin-top: 20px; text-align:center;">
+      <div style="color: #606266; margin-top: 20px; text-align: center">
         文章竟然不翼而飞了 ...
       </div>
     </div>

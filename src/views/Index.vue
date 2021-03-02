@@ -104,15 +104,18 @@
         <div style="margin-top: 5px">无尽的折腾，才是人生的主旋律</div>
       </div>
     </el-footer>
+
+    <back-top />
   </el-container>
 </template>
 
 <script>
 import { mapState } from "vuex";
+import BackTop from "@/components/BackTop.vue";
 
 export default {
   name: "index",
-  components: {},
+  components: { BackTop },
   mounted() {
     // 默认菜单选中
     this.menus.forEach(menu => {
