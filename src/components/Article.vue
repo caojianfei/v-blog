@@ -12,6 +12,7 @@
           :src="article.headImageUrl"
           fit="cover"
           style="width: 100%; height: 100%;"
+          :preview-src-list="[article.headImageUrl]"
         ></el-image>
       </div>
 
@@ -115,6 +116,8 @@ export default {
 
 .article-intro {
   margin-bottom: 10px;
+  font-size: 14px;
+  line-height: 26px;
 }
 
 .article-bottom {

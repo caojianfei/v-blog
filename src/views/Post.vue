@@ -6,7 +6,10 @@
         class="article-image"
         fit="cover"
         :src="article.headImageUrl"
-      ></el-image>
+        :preview-src-list="article.previewHeadImage"
+      >
+        ></el-image
+      >
 
       <div class="article-content">
         <div class="article-title">{{ article.title }}</div>
@@ -20,6 +23,7 @@
         <h1>评论</h1>
         <div class="comment-edit">
           <mavon-editor
+            codeStyle="monokai-sublime"
             v-model="comment.content"
             class="mavon-edit"
             v-bind="commentEdit"
@@ -75,14 +79,19 @@
     </div>
     <div
       v-if="empty"
-      style="display: flex;flex-direction: column;align-items: center;margin-top: 180px;"
+      style="
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-top: 180px;
+      "
     >
       <img
         alt=""
-        style="width: 100%;max-width: 280px;"
+        style="width: 100%; max-width: 280px"
         :src="require('../assets/cry.png')"
       />
-      <div style="color: #606266; margin-top: 20px; text-align:center;">
+      <div style="color: #606266; margin-top: 20px; text-align: center">
         文章竟然不翼而飞了 ...
       </div>
     </div>
@@ -96,6 +105,7 @@ import {
   getArticleCommentList
 } from "../apis/front/front";
 import moment from "moment";
+import hljs from "highlight.js";
 
 export default {
   name: "Post",
@@ -104,7 +114,8 @@ export default {
       article: {
         headImageUrl: "",
         title: "",
-        publishedAt: ""
+        publishedAt: "",
+        previewHeadImage: []
       },
       loading: false,
       empty: true,
@@ -156,7 +167,8 @@ export default {
           subfield: false, // 单双栏模式
           preview: true // 预览
         }
-      }
+      },
+      markdownIt: null
     };
   },
   beforeRouteEnter(to, from, next) {
@@ -172,8 +184,9 @@ export default {
           document
             .querySelector('meta[name="description"]')
             .setAttribute("content", data.intro);
+          data.previewHeadImage = [data.headImageUrl];
           vm.article = data;
-          vm.articleHtml = vm.$markDown.render(data.content);
+          vm.articleHtml = vm.getMarkdownIt().render(data.content);
           vm.empty = false;
           return;
         }
@@ -186,7 +199,7 @@ export default {
   },
   methods: {
     renderComment(content) {
-      return this.$markDown.render(content);
+      return this.getMarkdownIt().render(content);
     },
     async addCommit() {
       const { nickname, email, content } = this.comment;
@@ -247,6 +260,38 @@ export default {
         });
         this.comments = list;
       }
+    },
+
+    getMarkdownIt() {
+      if (this.markdownIt === null) {
+        let markdownIt = this.$markDown;
+        markdownIt.set({
+          highlight: function(str, lang) {
+            if (lang && hljs.getLanguage(lang)) {
+              try {
+                return (
+                  '<pre><div class="hljs"><code class="' +
+                  lang +
+                  '">' +
+                  hljs.highlight(lang, str, true).value +
+                  "</code></div></pre>"
+                );
+              } catch (e) {
+                console.error("highlight error: ", e);
+              }
+              return (
+                '<pre><code class="' +
+                lang +
+                '">' +
+                hljs.highlight(lang, str, true).value +
+                "</code></pre>"
+              );
+            }
+          }
+        });
+        this.markdownIt = markdownIt;
+      }
+      return this.markdownIt;
     }
   }
 };

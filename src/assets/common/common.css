@@ -3,3 +3,31 @@
         border-radius: 0 !important;
     }
 }
+
+/* markdown 样式覆盖 */
+.markdown-body .highlight pre, .markdown-body pre { /*代码内边距*/
+    padding: 0 !important;
+}
+
+.markdown-body blockquote, .markdown-body dl,
+.markdown-body ol,
+.markdown-body p,
+.markdown-body pre,
+.markdown-body table,
+.markdown-body ul { /*段落行间距*/
+    line-height: 30px;
+}
+
+.markdown-body blockquote { /*引用样式*/
+    margin: 20px 0 !important;
+    background-color: #f5f8fc;
+    padding: 1rem !important;
+    color: #8796a8;
+    border-left: none !important;
+}
+
+.markdown-body img {
+    display: block;
+    margin: 10px auto;
+    box-shadow: 0 0 30px #ccc;
+}
