@@ -3,7 +3,7 @@
     <transition name="el-zoom-in-bottom">
       <el-button
         v-if="display"
-        class="to-top-button"
+        class="to-top-button hidden-xs-only"
         size="medium"
         icon="el-icon-caret-top"
         plain

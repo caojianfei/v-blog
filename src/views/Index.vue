@@ -185,7 +185,6 @@ export default {
 }
 .header-block {
   width: 100%;
-  height: 100%;
   display: block;
   background: white;
   position: fixed;
