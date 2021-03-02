@@ -25,7 +25,7 @@ export default {
           .querySelector('meta[name="description"]')
           .setAttribute("content", description);
       }
-     //  console.log("to", to);
+      //  console.log("to", to);
       this.beforeRouteEnter();
       next();
     });

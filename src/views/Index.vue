@@ -1,52 +1,59 @@
 <template>
   <el-container class="container" v-loading.fullscreen.lock="routeLoading">
+    <!-- 页面头部内容 -->
     <el-header class="header">
-      <el-row :gutter="5" class="nav">
-        <el-col :xs="4" class="hidden-sm-and-up nav-item"
-          ><div class="bg-purple nav-icon" @click="drawer = true">
-            <img src="../assets/nav.png" alt="" /></div
-        ></el-col>
-        <el-col :xs="16" :sm="6" class="nav-item"
-          ><div class="nav-logo" @click="toIndex">
-            <div class="logo-container hidden-xs-only">
-              <img src="../assets/logo.png" alt="" />
-            </div>
-            <div class="logo-title">
-              <span>Jefrey 的个人博客</span>
-            </div>
-          </div></el-col
-        >
-        <el-col :sm="8" class="hidden-xs-only nav-item"
-          ><div class="nav-menu nav-menu">
-            <el-menu
-              :default-active="activeIndex"
-              class="el-menu"
-              mode="horizontal"
-              @select="handleSelect"
-            >
-              <el-menu-item
-                v-bind:key="menu.link"
-                v-for="menu in menus"
-                :index="menu.link"
+      <div class="header-block">
+        <el-row :gutter="5" class="nav">
+          <el-col :xs="4" class="hidden-sm-and-up nav-item"
+            ><div class="bg-purple nav-icon" @click="drawer = true">
+              <img src="../assets/nav.png" alt="" /></div
+          ></el-col>
+          <el-col :xs="16" :sm="6" class="nav-item"
+            ><div class="nav-logo" @click="toIndex">
+              <div class="logo-container hidden-xs-only">
+                <img src="../assets/logo.png" alt="" />
+              </div>
+              <div class="logo-title">
+                <span>Jefrey 的个人博客</span>
+              </div>
+            </div></el-col
+          >
+          <el-col :sm="8" class="hidden-xs-only nav-item"
+            ><div class="nav-menu nav-menu">
+              <el-menu
+                :default-active="activeIndex"
+                class="el-menu"
+                mode="horizontal"
+                @select="handleSelect"
               >
-                {{ menu.title }}
-              </el-menu-item>
-            </el-menu>
-          </div></el-col
-        >
-        <el-col :sm="10" class="hidden-xs-only nav-item"
-          ><div class="nav-search">
-            <label>
-              <input
-                v-model="keyword"
-                placeholder="输入关键词搜索"
-                class="search-input"
-              />
-            </label>
-            <el-button @click="searchKeyword" type="primary">搜索</el-button>
-          </div></el-col
-        >
-      </el-row>
+                <el-menu-item
+                  v-bind:key="menu.link"
+                  v-for="menu in menus"
+                  :index="menu.link"
+                >
+                  {{ menu.title }}
+                </el-menu-item>
+              </el-menu>
+            </div></el-col
+          >
+          <el-col :sm="10" class="hidden-xs-only nav-item"
+            ><div class="nav-search">
+              <label>
+                <input
+                  v-model="keyword"
+                  placeholder="输入关键词搜索"
+                  class="search-input"
+                />
+              </label>
+              <el-button @click="searchKeyword" type="primary">搜索</el-button>
+            </div></el-col
+          >
+        </el-row>
+      </div>
+    </el-header>
+
+    <!-- 侧边栏 -->
+    <el-aside>
       <el-drawer
         title="menu"
         :visible.sync="drawer"
@@ -78,10 +85,14 @@
           </div>
         </div>
       </el-drawer>
-    </el-header>
+    </el-aside>
+
+    <!-- 页面主体内容 -->
     <el-main class="main">
       <router-view></router-view>
     </el-main>
+
+    <!-- 页面底部内容 -->
     <el-footer class="footer">
       <div class="foot-info">
         <div>
@@ -90,7 +101,7 @@
             >浙ICP备16047802号</a
           >
         </div>
-        <div style="margin-top: 5px;">无尽的折腾，才是人生的主旋律</div>
+        <div style="margin-top: 5px">无尽的折腾，才是人生的主旋律</div>
       </div>
     </el-footer>
   </el-container>
@@ -164,6 +175,19 @@ export default {
 .container {
   display: flex;
   min-height: 100vh;
+}
+.header {
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+}
+.header-block {
+  width: 100%;
+  height: 100%;
+  display: block;
+  background: white;
+  position: fixed;
+  height: 60px;
+  z-index: 1;
 }
 .main {
   flex: 1;
