@@ -277,7 +277,7 @@ export default {
                   "</code></div></pre>"
                 );
               } catch (e) {
-                console.error("highlight error: ", e);
+                // console.error("highlight error: ", e);
               }
               return (
                 '<pre><code class="' +
