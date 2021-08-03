@@ -96,6 +96,15 @@
     <el-footer class="footer">
       <div class="foot-info">
         <div>
+          <a
+            target="_blank"
+            href="https://www.upyun.com/?utm_source=lianmeng&utm_medium=referral"
+            >本网站由
+            <img class="upyun-logo" src="upyun_logo.png" />
+            提供CDN加速/云存储服务</a
+          >
+        </div>
+        <div>
           ©2018 - 2022 caojf.com All Rights Reserved.
           <a href="https://beian.miit.gov.cn" target="_blank"
             >浙ICP备16047802号</a
@@ -199,6 +208,7 @@ export default {
 }
 .footer {
   background: #f7f7f7;
+  height: auto !important;
 }
 
 .foot-info {
@@ -286,5 +296,10 @@ export default {
 .foot-info a {
   text-decoration: none;
   color: gray;
+}
+.upyun-logo {
+  width: 57px;
+  position: relative;
+  bottom: -8px;
 }
 </style>
