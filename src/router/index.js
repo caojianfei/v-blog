@@ -3,19 +3,19 @@ import VueRouter from "vue-router";
 import store from "../store";
 
 Vue.use(VueRouter);
-import Layout from "../views/admin/Layout";
+// import Layout from "../views/admin/Layout";
 import Dashboard from "../views/admin/dashboard/Dashboard";
 import Tags from "../views/admin/tags/Index";
 import Articles from "../views/admin/articles/Index";
 import Categories from "../views/admin/categories/Index";
 import Comments from "@/views/admin/comments/Index";
 
-import Home from "../views/Home";
+//import Home from "../views/Home";
 import Index from "../views/Index";
-import Post from "../views/Post";
-import About from "../views/About";
-import Contact from "../views/Contact";
-import Search from "../views/Search";
+// import Post from "../views/Post";
+// import About from "../views/About";
+// import Contact from "../views/Contact";
+// import Search from "../views/Search";
 
 const routes = [
   {
@@ -25,7 +25,8 @@ const routes = [
   },
   {
     path: "/admin",
-    component: Layout,
+    component: () =>
+      import(/* webpackChunkName: "admin" */ "../views/admin/Layout"),
     beforeEnter: (to, from, next) => {
       const isLogin = store.getters["auth/isLogin"];
       if (isLogin === false) {
@@ -88,7 +89,7 @@ const routes = [
     children: [
       {
         path: "",
-        component: Home,
+        component: () => import("../views/Home"),
         meta: {
           title: "Jeffrey的个人博客 - 首页",
           keywords: "",
@@ -97,7 +98,7 @@ const routes = [
       },
       {
         path: "contact",
-        component: Contact,
+        component: () => import("../views/Contact"),
         meta: {
           title: "Jeffrey的个人博客 - 联系我",
           keywords: "",
@@ -106,7 +107,7 @@ const routes = [
       },
       {
         path: "about",
-        component: About,
+        component: () => import("../views/About"),
         meta: {
           title: "Jeffrey的个人博客 - 关于我",
           keywords: "",
@@ -115,11 +116,11 @@ const routes = [
       },
       {
         path: "post/:id",
-        component: Post
+        component: () => import("../views/Post")
       },
       {
         path: "search",
-        component: Search,
+        component: import("../views/Search"),
         meta: {
           title: "Jeffrey的个人博客 - 搜索",
           keywords: "",

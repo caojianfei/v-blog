@@ -38,9 +38,6 @@
 <script>
 import Article from "@/components/Article";
 import { getTagList, getArticleList } from "../apis/front/front";
-import code1 from "@/assets/code1.jpg";
-import code2 from "@/assets/code2.jpeg";
-import code3 from "@/assets/code3.jpg";
 export default {
   name: "home",
   components: {
@@ -62,12 +59,7 @@ export default {
       total: 0,
       loading: false,
       tags: [],
-      carousels: [
-        "https://gitee.com/cjf123/file-repository/raw/master/17742555.jpeg",
-        code1,
-        code2,
-        code3
-      ]
+      carousels: []
     };
   },
   methods: {
