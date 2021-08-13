@@ -4,3 +4,4 @@ export * from "./tag";
 export * from "./article";
 export * from "./file";
 export * from "./comment";
+export * from "./upyun";

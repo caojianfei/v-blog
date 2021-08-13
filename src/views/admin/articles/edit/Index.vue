@@ -130,13 +130,16 @@
 </template>
 
 <script>
+import moment from "moment";
 import {
   searchCategories,
   searchTags,
   createArticle,
   showArticle,
   editArticle,
-  uploadImages as uploadFile
+  // uploadImages as uploadFile
+  getFormApiAuth,
+  uploadImage
 } from "../../../../apis";
 export default {
   name: "Index",
@@ -161,6 +164,17 @@ export default {
         keywords: "",
         headImageType: "1",
         headImageLink: ""
+      },
+      upyun: {
+        authorization: "",
+        policy: ""
+      },
+      uploadOptions: {
+        bucket: "static-storage-caojf",
+        saveKey: "/test/{filemd5}",
+        expiration: moment()
+          .add(30, "minutes")
+          .unix()
       }
     };
   },
@@ -172,6 +186,8 @@ export default {
       this.id = id;
       this.searchArticle(id);
     }
+    // 获取又拍云 from api 授权信息
+    this.requestUpyunAuth();
   },
   methods: {
     submit() {
@@ -329,14 +345,34 @@ export default {
     },
     onEditImageAdd(pos, file) {
       let formData = new FormData();
-      formData.append("images", file);
-      uploadFile(formData).then(res => {
-        const { code, message, data } = res;
-        if (code === 0) {
-          const { list } = data;
-          this.$refs.md.$img2Url(pos, list[0].url);
-        } else {
+      formData.append("file", file);
+      formData.append("bucket", this.uploadOptions.bucket);
+      formData.append("save-key", this.uploadOptions.saveKey);
+      formData.append("expiration", this.uploadOptions.expiration);
+      formData.append("authorization", this.upyun.authorization);
+      formData.append("policy", this.upyun.policy);
+
+      uploadImage(formData, this.uploadOptions.bucket).then(
+        res => ("res", console.log(res))
+      );
+      // uploadFile(formData).then(res => {
+      //   const { code, message, data } = res;
+      //   if (code === 0) {
+      //     const { list } = data;
+      //     this.$refs.md.$img2Url(pos, list[0].url);
+      //   } else {
+      //     this.$message.error(message);
+      //   }
+      // });
+    },
+    requestUpyunAuth() {
+      getFormApiAuth(this.uploadOptions).then(res => {
+        const { code, data, message } = res;
+        if (code != 0) {
           this.$message.error(message);
+        } else {
+          this.upyun.authorization = data.authorization;
+          this.upyun.policy = data.policy;
         }
       });
     }
