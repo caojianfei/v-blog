@@ -4,9 +4,9 @@ import router from "./router";
 import store from "./store";
 import ElementUI from "element-ui";
 import mavonEditor from "mavon-editor";
-//import "element-ui/lib/theme-chalk/index.css";
-//import "mavon-editor/dist/css/index.css";
-//import "element-ui/lib/theme-chalk/display.css";
+import "element-ui/lib/theme-chalk/index.css";
+import "mavon-editor/dist/css/index.css";
+import "element-ui/lib/theme-chalk/display.css";
 import "./assets/common/common.css";
 import moment from "moment";
 
