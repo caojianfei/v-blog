@@ -85,7 +85,9 @@
             :on-success="onImageUploaded"
             :on-remove="onImageRemove"
             :file-list="uploadImages"
+            :http-request="uploadCoverImage"
             list-type="picture"
+            :multiple="false"
           >
             <i class="el-icon-upload"></i>
             <div class="el-upload__text">
@@ -148,7 +150,7 @@ export default {
       id: 0,
       categoryQueryLoading: false,
       tagQueryLoading: false,
-      imageUploadAction: process.env.VUE_APP_API_HOST + "/files/image",
+      imageUploadAction: "http://v0.api.upyun.com/static-storage-caojf",
       uploadImages: [],
       categories: [],
       tags: [],
@@ -277,6 +279,7 @@ export default {
         .finally(() => (this.tagQueryLoading = false));
     },
     onImageUploaded(res) {
+      console.log("onImageUploaded", res);
       const {
         code,
         data: { list }
@@ -289,6 +292,7 @@ export default {
       this.form.headImage = list[0]["md5"];
     },
     onImageRemove() {
+      console.log("onImageRemove");
       this.form.headImage = "";
     },
     searchArticle(id) {
@@ -352,27 +356,47 @@ export default {
       formData.append("authorization", this.upyun.authorization);
       formData.append("policy", this.upyun.policy);
 
-      uploadImage(formData, this.uploadOptions.bucket).then(
-        res => ("res", console.log(res))
-      );
-      // uploadFile(formData).then(res => {
-      //   const { code, message, data } = res;
-      //   if (code === 0) {
-      //     const { list } = data;
-      //     this.$refs.md.$img2Url(pos, list[0].url);
-      //   } else {
-      //     this.$message.error(message);
-      //   }
-      // });
+      uploadImage(formData, this.uploadOptions.bucket).then(res => {
+        const { status, data } = res;
+        if (status === 200) {
+          let { url } = data;
+          url = `http://static.caojf.com${url}`;
+          this.$refs.md.$img2Url(pos, url);
+        } else {
+          this.$message.error("图片上传失败");
+        }
+      });
     },
     requestUpyunAuth() {
       getFormApiAuth(this.uploadOptions).then(res => {
         const { code, data, message } = res;
-        if (code != 0) {
+        if (code !== 0) {
           this.$message.error(message);
         } else {
           this.upyun.authorization = data.authorization;
           this.upyun.policy = data.policy;
+        }
+      });
+    },
+    uploadCoverImage(data) {
+      // console.log('uploadCoverImage', data)
+      let formData = new FormData();
+      formData.append("file", data.file);
+      formData.append("bucket", this.uploadOptions.bucket);
+      formData.append("save-key", this.uploadOptions.saveKey);
+      formData.append("expiration", this.uploadOptions.expiration);
+      formData.append("authorization", this.upyun.authorization);
+      formData.append("policy", this.upyun.policy);
+      uploadImage(formData, this.uploadOptions.bucket).then(res => {
+        console.log("uploadCoverImage", res);
+        const { status, data } = res;
+        if (status === 200) {
+          let { url } = data;
+          url = `http://static.caojf.com${url}`;
+          this.form.headImage = url;
+          this.uploadImages = [url];
+        } else {
+          this.$message.error("图片上传失败");
         }
       });
     }
