@@ -26,10 +26,6 @@ export function deleteCategory(id) {
 }
 
 export function searchCategories(name) {
-  if (name === "" || name === undefined || name === null) {
-    throw new Error("名称不能为空");
-  }
-
-  const url = `/admin/categories/${name}`;
-  return http.get(url);
+  const url = `/admin/categories/search`;
+  return http.get(url, { params: { title: name } });
 }

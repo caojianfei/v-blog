@@ -3,10 +3,10 @@
     <el-row>
       <el-col :span="8" style="padding-right: 20px">
         <el-select
+          clearable
           style="min-width: 100%"
           v-model="form.categoryId"
           filterable
-          remote
           reserve-keyword
           placeholder="请选择文章分类, 输入关键词搜索分类"
           :remote-method="searchCategory"
@@ -133,7 +133,7 @@ import {
   editArticle,
   getFormApiAuth,
   uploadImage
-} from "../../../../apis";
+} from "@/apis";
 export default {
   name: "Index",
   data() {
@@ -162,7 +162,7 @@ export default {
       },
       uploadOptions: {
         bucket: "static-storage-caojf",
-        saveKey: "/v-blog/{filemd5}",
+        saveKey: process.env.VUE_APP_STORAGE_DIR + "/v-blog/{filemd5}",
         expiration: moment()
           .add(30, "minutes")
           .unix()
@@ -179,6 +179,9 @@ export default {
     }
     // 获取又拍云 from api 授权信息
     this.requestUpyunAuth();
+
+    // 获取分类
+    this.searchCategory();
   },
   methods: {
     submit() {
@@ -245,11 +248,6 @@ export default {
     },
     searchCategory(query) {
       this.categoryQueryLoading = true;
-      if (query === "" || name === undefined || name === null) {
-        this.categoryQueryLoading = false;
-        return;
-      }
-
       searchCategories(query)
         .then(res => (this.categories = res.data.list))
         .catch(() => this.$message.error("分类查询失败"))

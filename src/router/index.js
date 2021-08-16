@@ -10,12 +10,12 @@ import Articles from "../views/admin/articles/Index";
 import Categories from "../views/admin/categories/Index";
 import Comments from "@/views/admin/comments/Index";
 
-//import Home from "../views/Home";
+import Home from "../views/Home";
 import Index from "../views/Index";
-// import Post from "../views/Post";
-// import About from "../views/About";
-// import Contact from "../views/Contact";
-// import Search from "../views/Search";
+import Post from "../views/Post";
+import About from "../views/About";
+import Contact from "../views/Contact";
+import Search from "../views/Search";
 
 const routes = [
   {
@@ -89,7 +89,7 @@ const routes = [
     children: [
       {
         path: "",
-        component: () => import("../views/Home"),
+        component: Home,
         meta: {
           title: "Jeffrey的个人博客 - 首页",
           keywords: "",
@@ -98,7 +98,7 @@ const routes = [
       },
       {
         path: "contact",
-        component: () => import("../views/Contact"),
+        component: Contact,
         meta: {
           title: "Jeffrey的个人博客 - 联系我",
           keywords: "",
@@ -107,7 +107,7 @@ const routes = [
       },
       {
         path: "about",
-        component: () => import("../views/About"),
+        component: About,
         meta: {
           title: "Jeffrey的个人博客 - 关于我",
           keywords: "",
@@ -116,11 +116,11 @@ const routes = [
       },
       {
         path: "post/:id",
-        component: () => import("../views/Post")
+        component: Post
       },
       {
         path: "search",
-        component: import("../views/Search"),
+        component: Search,
         meta: {
           title: "Jeffrey的个人博客 - 搜索",
           keywords: "",

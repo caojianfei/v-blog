@@ -5,11 +5,9 @@
         <el-select
           v-model="form.categoryId"
           filterable
-          remote
           clearable
           reserve-keyword
           placeholder="输入关键字搜索分类"
-          :remote-method="searchCategories"
           :loading="loading"
         >
           <el-option
@@ -87,7 +85,7 @@
           &nbsp;
           <el-popconfirm
             title="确定删除该文章？"
-            @onConfirm="handleDelete(scope.row.id)"
+            @confirm="handleDelete(scope.row.id)"
           >
             <el-button slot="reference" size="mini" type="danger"
               >删除</el-button
@@ -136,12 +134,10 @@ export default {
   },
   mounted() {
     this.getArticles();
+    this.searchCategories();
   },
   methods: {
     searchCategories(query) {
-      if (query === "" || query === undefined || query === null) {
-        return;
-      }
       this.loading = true;
       searchCategories(query)
         .then(res => {
