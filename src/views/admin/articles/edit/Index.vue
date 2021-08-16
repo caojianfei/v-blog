@@ -141,7 +141,7 @@ export default {
       id: 0,
       categoryQueryLoading: false,
       tagQueryLoading: false,
-      imageUploadAction: "http://v0.api.upyun.com/static-storage-caojf",
+      imageUploadAction: "https://v0.api.upyun.com/static-storage-caojf",
       uploadImages: [],
       categories: [],
       tags: [],
@@ -369,7 +369,6 @@ export default {
       formData.append("authorization", this.upyun.authorization);
       formData.append("policy", this.upyun.policy);
       uploadImage(formData, this.uploadOptions.bucket).then(res => {
-        console.log("uploadCoverImage", res);
         const { status, data } = res;
         if (status === 200) {
           let { url } = data;

@@ -7,6 +7,6 @@ export function getFormApiAuth(query = {}) {
 }
 
 export function uploadImage(formData, bucket) {
-  const url = "http://v0.api.upyun.com/" + bucket;
+  const url = "https://v0.api.upyun.com/" + bucket;
   return axios.post(url, formData);
 }
