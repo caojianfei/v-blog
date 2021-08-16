@@ -74,10 +74,7 @@
 
         <div class="setting-item">
           <label>封面图</label>
-          <el-radio v-model="form.headImageType" label="1">上传</el-radio>
-          <el-radio v-model="form.headImageType" label="2">图片链接</el-radio>
           <el-upload
-            v-if="form.headImageType === '1'"
             class="upload-demo"
             name="images"
             drag
@@ -97,11 +94,6 @@
               只能上传jpg/png文件，且不超过500kb
             </div>
           </el-upload>
-          <el-input
-            placeholder="请输入图片链接"
-            v-if="form.headImageType === '2'"
-            v-model="form.headImageLink"
-          ></el-input>
         </div>
 
         <div class="setting-item">
@@ -162,9 +154,7 @@ export default {
         tags: [],
         isDraft: 0,
         publishedAt: "",
-        keywords: "",
-        headImageType: "1",
-        headImageLink: ""
+        keywords: ""
       },
       upyun: {
         authorization: "",
@@ -302,21 +292,16 @@ export default {
         }
         this.form.title = data.title;
         if (data.headImage !== "") {
-          if (data.headImageType === "2") {
-            this.form.headImageLink = data.headImage;
-          } else {
-            this.uploadImages = [
-              {
-                name: headImageFile.name,
-                url: headImageFile.url
-              }
-            ];
-          }
+          this.uploadImages = [
+            {
+              name: headImageFile.name,
+              url: headImageFile.url
+            }
+          ];
         }
         this.categories = [
           { value: data.category.id, label: data.category.name }
         ];
-        this.form.headImageType = data.headImageType;
         this.form.title = data.title;
         this.form.headImage = data.headImage;
         this.form.content = data.content;
@@ -389,7 +374,7 @@ export default {
         if (status === 200) {
           let { url } = data;
           let fullUrl = `http://static.caojf.com${url}`;
-          this.form.headImage = url;
+          this.form.headImage = fullUrl;
           this.uploadImages = [
             {
               name: url,
