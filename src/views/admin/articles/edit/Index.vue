@@ -162,7 +162,7 @@ export default {
       },
       uploadOptions: {
         bucket: "static-storage-caojf",
-        saveKey: "/test/{filemd5}",
+        saveKey: "/v-blog/{filemd5}",
         expiration: moment()
           .add(30, "minutes")
           .unix()
@@ -342,7 +342,7 @@ export default {
         const { status, data } = res;
         if (status === 200) {
           let { url } = data;
-          url = `http://static.caojf.com${url}`;
+          url = `https://static.caojf.com${url}`;
           this.$refs.md.$img2Url(pos, url);
         } else {
           this.$message.error("图片上传失败");
@@ -373,7 +373,7 @@ export default {
         const { status, data } = res;
         if (status === 200) {
           let { url } = data;
-          let fullUrl = `http://static.caojf.com${url}`;
+          let fullUrl = `https://static.caojf.com${url}`;
           this.form.headImage = fullUrl;
           this.uploadImages = [
             {
