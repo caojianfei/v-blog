@@ -31,7 +31,7 @@
         <mavon-editor
           codeStyle="monokai-sublime"
           v-model="form.content"
-          style="min-height: 500px;"
+          style="min-height: 500px"
           ref="md"
           @imgAdd="onEditImageAdd"
         />
@@ -139,7 +139,6 @@ import {
   createArticle,
   showArticle,
   editArticle,
-  // uploadImages as uploadFile
   getFormApiAuth,
   uploadImage
 } from "../../../../apis";
@@ -279,7 +278,6 @@ export default {
         .finally(() => (this.tagQueryLoading = false));
     },
     onImageUploaded(res) {
-      console.log("onImageUploaded", res);
       const {
         code,
         data: { list }
@@ -292,7 +290,6 @@ export default {
       this.form.headImage = list[0]["md5"];
     },
     onImageRemove() {
-      console.log("onImageRemove");
       this.form.headImage = "";
     },
     searchArticle(id) {
@@ -379,7 +376,6 @@ export default {
       });
     },
     uploadCoverImage(data) {
-      // console.log('uploadCoverImage', data)
       let formData = new FormData();
       formData.append("file", data.file);
       formData.append("bucket", this.uploadOptions.bucket);
@@ -392,9 +388,14 @@ export default {
         const { status, data } = res;
         if (status === 200) {
           let { url } = data;
-          url = `http://static.caojf.com${url}`;
+          let fullUrl = `http://static.caojf.com${url}`;
           this.form.headImage = url;
-          this.uploadImages = [url];
+          this.uploadImages = [
+            {
+              name: url,
+              url: fullUrl
+            }
+          ];
         } else {
           this.$message.error("图片上传失败");
         }
